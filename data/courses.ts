@@ -1,0 +1,193 @@
+export interface Course {
+    id: number;
+    name: string;
+    category: "Engineering" | "Medical" | "Arts & Science" | "Law" | "Management" | "Design";
+    duration: string;
+    avgFees: string;
+    emoji: string;
+    color: string;
+    topColleges: string[];
+    careerOptions: string[];
+    description: string;
+    slug?: string;
+}
+
+const courses: Course[] = [
+    // Engineering
+    {
+        id: 1,
+        name: "B.Tech Computer Science",
+        category: "Engineering",
+        duration: "4 Years",
+        avgFees: "₹1.5L – ₹4L / year",
+        emoji: "💻",
+        color: "#1a56db",
+        topColleges: ["IIT Madras", "NIT Trichy", "VIT Vellore", "Amrita"],
+        careerOptions: ["Software Engineer", "Data Scientist", "AI Engineer", "Product Manager"],
+        description: "Core programming, algorithms, AI/ML, and software engineering fundamentals.",
+        slug: "btech-computer-science",
+    },
+    {
+        id: 2,
+        name: "B.Tech Mechanical Engineering",
+        category: "Engineering",
+        duration: "4 Years",
+        avgFees: "₹1L – ₹3L / year",
+        emoji: "⚙️",
+        color: "#5850ec",
+        topColleges: ["IIT Madras", "NIT Trichy", "PSG Tech", "Thiagarajar"],
+        careerOptions: ["Design Engineer", "Manufacturing", "Automotive", "Aerospace"],
+        description: "Thermodynamics, machines, manufacturing—core of the physical engineering world.",
+        slug: "btech-mechanical-engineering",
+    },
+    {
+        id: 3,
+        name: "B.Tech Electronics & Communication",
+        category: "Engineering",
+        duration: "4 Years",
+        avgFees: "₹1L – ₹3L / year",
+        emoji: "📡",
+        color: "#0e9f6e",
+        topColleges: ["IIT Madras", "NIT Trichy", "SSN College", "VIT"],
+        careerOptions: ["VLSI Engineer", "Telecom Engineer", "IoT Developer", "Signal Processing"],
+        description: "Electronics, VLSI, communication systems, and embedded technologies.",
+        slug: "btech-electronics-and-communication",
+    },
+    {
+        id: 4,
+        name: "B.Tech Artificial Intelligence & ML",
+        category: "Engineering",
+        duration: "4 Years",
+        avgFees: "₹2L – ₹4.5L / year",
+        emoji: "🤖",
+        color: "#7e3af2",
+        topColleges: ["IIT Madras", "VIT Vellore", "Amrita", "SRM"],
+        careerOptions: ["ML Engineer", "AI Researcher", "Data Scientist", "NLP Engineer"],
+        description: "Emerging specialization in machine learning, deep learning, and AI systems.",
+        slug: "btech-artificial-intelligence-and-ml",
+    },
+    {
+        id: 5,
+        name: "B.Tech Civil Engineering",
+        category: "Engineering",
+        duration: "4 Years",
+        avgFees: "₹80K – ₹2L / year",
+        emoji: "🏗️",
+        color: "#b45309",
+        topColleges: ["IIT Madras", "NIT Trichy", "Anna University", "PSG Tech"],
+        careerOptions: ["Structural Engineer", "Urban Planner", "Construction Manager", "TNPSC"],
+        description: "Infrastructure, structures, geotechnics—build the world around us.",
+        slug: "btech-civil-engineering",
+    },
+    // Medical
+    {
+        id: 6,
+        name: "MBBS",
+        category: "Medical",
+        duration: "5.5 Years",
+        avgFees: "₹50K – ₹25L / year",
+        emoji: "🩺",
+        color: "#e02424",
+        topColleges: ["Amrita Hospital", "SRM Medical", "Stanley Medical", "JIPMER"],
+        careerOptions: ["Doctor", "Surgeon", "Specialist", "Medical Researcher"],
+        description: "Foundational medical degree for clinical practice and further specialization.",
+        slug: "mbbs",
+    },
+    {
+        id: 7,
+        name: "B.Pharm",
+        category: "Medical",
+        duration: "4 Years",
+        avgFees: "₹50K – ₹2L / year",
+        emoji: "💊",
+        color: "#c81e1e",
+        topColleges: ["Amrita", "SRM", "SASTRA", "Manipal"],
+        careerOptions: ["Pharmacist", "Drug Inspector", "R&D", "Hospital Pharmacist"],
+        description: "Study of pharmaceutical sciences, drug development, and patient care.",
+        slug: "bpharm",
+    },
+    // Arts & Science
+    {
+        id: 8,
+        name: "B.Sc. Computer Science",
+        category: "Arts & Science",
+        duration: "3 Years",
+        avgFees: "₹15K – ₹60K / year",
+        emoji: "🖥️",
+        color: "#0891b2",
+        topColleges: ["Loyola College", "Stella Maris", "Nirmala", "MCC"],
+        careerOptions: ["Software Developer", "Web Developer", "Database Admin", "IT Support"],
+        description: "Affordable CS pathway via arts colleges with strong programming foundation.",
+        slug: "bsc-computer-science",
+    },
+    {
+        id: 9,
+        name: "B.Com (General & Honours)",
+        category: "Arts & Science",
+        duration: "3 Years",
+        avgFees: "₹10K – ₹50K / year",
+        emoji: "📊",
+        color: "#057a55",
+        topColleges: ["Loyola College", "Christ University", "MCC", "SH College"],
+        careerOptions: ["CA", "Accountant", "Banker", "Finance Analyst", "IAS"],
+        description: "Commerce foundation for CA, CMA, MBA, banking and government services.",
+        slug: "bcom-general",
+    },
+    {
+        id: 10,
+        name: "B.A. English Literature",
+        category: "Arts & Science",
+        duration: "3 Years",
+        avgFees: "₹8K – ₹30K / year",
+        emoji: "📖",
+        color: "#9f1239",
+        topColleges: ["Loyola College", "Stella Maris", "Madras Christian College", "Women's Christian"],
+        careerOptions: ["Journalist", "Content Writer", "Editor", "Teacher", "IAS"],
+        description: "Language, literature, and communication skills for diverse career paths.",
+        slug: "ba-english-literature",
+    },
+    // Law
+    {
+        id: 11,
+        name: "BA LLB (Integrated)",
+        category: "Law",
+        duration: "5 Years",
+        avgFees: "₹80K – ₹3L / year",
+        emoji: "⚖️",
+        color: "#7c3aed",
+        topColleges: ["NLU Bangalore", "Christ University", "SRM School of Law", "VIT School of Law"],
+        careerOptions: ["Advocate", "Corporate Lawyer", "Judge", "Legal Advisor", "IAS"],
+        description: "Integrated 5-year law program combining arts with legal fundamentals.",
+        slug: "ba-llb-integrated",
+    },
+    // Management
+    {
+        id: 12,
+        name: "MBA (Business Administration)",
+        category: "Management",
+        duration: "2 Years",
+        avgFees: "₹1.5L – ₹10L / year",
+        emoji: "💼",
+        color: "#c27803",
+        topColleges: ["IIT Madras DoMS", "IIM Bangalore", "Christ University", "Anna University"],
+        careerOptions: ["Manager", "Entrepreneur", "Consultant", "Finance Analyst", "Marketing Head"],
+        description: "Comprehensive business management for leadership roles across industries.",
+        slug: "mba-business-administration",
+    },
+    // Design
+    {
+        id: 13,
+        name: "B.Des (Design)",
+        category: "Design",
+        duration: "4 Years",
+        avgFees: "₹1L – ₹4L / year",
+        emoji: "🎨",
+        color: "#be185d",
+        topColleges: ["IIT Madras", "NID", "MIT Manipal", "VIT"],
+        careerOptions: ["UX Designer", "Product Designer", "Graphic Designer", "Brand Strategist"],
+        description: "Industry-driven design education blending creativity with technology and research.",
+        slug: "bdes-design",
+    },
+];
+
+export default courses;
