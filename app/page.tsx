@@ -53,7 +53,7 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
-const newsItems: NewsItem[] = [
+const newsItems = [
   {
     id: 1,
     date: "March 5, 2026",
