@@ -13,10 +13,17 @@ export default function Footer() {
             <Link
               href="/"
               className="navbar-logo"
-              style={{ fontSize: "1.3rem", cursor: "pointer", textDecoration: "none", display: "flex", alignItems: "center", gap: "8px" }}
+              style={{
+                fontSize: "1.3rem",
+                cursor: "pointer",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
             >
               <FiBook size={20} />
-              Edu<span>Expert</span>
+              <span> Edu Expert</span>
             </Link>
 
             <p>
@@ -25,20 +32,48 @@ export default function Footer() {
             </p>
 
             <div className="footer-social" style={{ marginTop: "16px" }}>
-              <Link href="https://github.com/eduexpert" className="social-icon" aria-label="GitHub">
+              <Link
+                href="https://github.com/eduexpert"
+                className="social-icon"
+                aria-label="GitHub"
+              >
                 <FiGithub size={15} />
               </Link>
-              <Link href="https://twitter.com/eduexpert" className="social-icon" aria-label="Twitter">
+              <Link
+                href="https://twitter.com/eduexpert"
+                className="social-icon"
+                aria-label="Twitter"
+              >
                 <FiTwitter size={15} />
               </Link>
-              <Link href="https://linkedin.com/company/eduexpert" className="social-icon" aria-label="LinkedIn">
+              <Link
+                href="https://linkedin.com/company/eduexpert"
+                className="social-icon"
+                aria-label="LinkedIn"
+              >
                 <FiLinkedin size={15} />
               </Link>
             </div>
 
             <div style={{ marginTop: "24px" }}>
-              <p style={{ margin: 0, fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Questions?</p>
-              <a href="tel:+911800123456" style={{ color: "var(--accent-light)", textDecoration: "none", fontWeight: 700, fontSize: "1.1rem" }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.7)",
+                }}
+              >
+                Questions?
+              </p>
+              <a
+                href="tel:+911800123456"
+                style={{
+                  color: "var(--accent-light)",
+                  textDecoration: "none",
+                  fontWeight: 700,
+                  fontSize: "1.1rem",
+                }}
+              >
                 +91 1800 123 456
               </a>
             </div>
@@ -49,34 +84,22 @@ export default function Footer() {
             <h4>Quick Links</h4>
             <ul>
               <li>
-                <Link href="/about">
-                  About Us
-                </Link>
+                <Link href="/about">About Us</Link>
               </li>
               <li>
-                <Link href="/colleges">
-                  All Colleges
-                </Link>
+                <Link href="/colleges">All Colleges</Link>
               </li>
               <li>
-                <Link href="/apply">
-                  Apply Now
-                </Link>
+                <Link href="/apply">Apply Now</Link>
               </li>
               <li>
-                <Link href="/contact">
-                  Contact Us
-                </Link>
+                <Link href="/contact">Contact Us</Link>
               </li>
               <li>
-                <Link href="/privacy">
-                  Privacy Policy
-                </Link>
+                <Link href="/privacy">Privacy Policy</Link>
               </li>
               <li>
-                <Link href="/terms">
-                  Terms & Conditions
-                </Link>
+                <Link href="/terms">Terms & Conditions</Link>
               </li>
             </ul>
           </div>
@@ -88,9 +111,7 @@ export default function Footer() {
             </Link>
             <ul>
               <li>
-                <Link href="/exams/1">
-                  JEE Main &amp; Advanced
-                </Link>
+                <Link href="/exams/1">JEE Main &amp; Advanced</Link>
               </li>
               <li>
                 <Link href="/exams/6">NEET UG</Link>
@@ -111,9 +132,7 @@ export default function Footer() {
             </Link>
             <ul>
               <li>
-                <Link href="/courses/1">
-                  B.Tech CSE
-                </Link>
+                <Link href="/courses/1">B.Tech CSE</Link>
               </li>
               <li>
                 <Link href="/courses/6">MBBS</Link>

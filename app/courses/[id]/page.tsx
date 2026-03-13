@@ -23,7 +23,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function CourseLandingPage() {
   const { id } = useParams();
-  const course = courses.find((c) => c.id === Number(id));
+  const course = courses.find((c) => c.slug === id || c.id.toString() === id);
   const details = course ? courseDetails[course.id] : null;
 
   const heroRef = useRef<HTMLDivElement>(null);

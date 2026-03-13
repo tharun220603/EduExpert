@@ -1,0 +1,98 @@
+/* LocationsRow.module.css */
+
+.card {
+  background: #ffffff;
+  border-radius: 28px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.04);
+  cursor: pointer;
+  height: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content {
+  padding: 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.emoji {
+  font-size: 1.5rem;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.address {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: auto;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* ── MOBILE ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .card {
+    height: 340px !important; /* Unified mobile height with colleges */
+    border-radius: 20px;
+  }
+
+  .content {
+    padding: 24px 20px;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .address {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    height: 320px !important;
+  }
+}

@@ -7,7 +7,6 @@ import FeaturedCollegesRow from "@/components/FeaturedCollegesRow";
 import LocationsRow from "@/components/LocationsRow";
 import Counter from "@/components/Counter";
 import PremiumCarousel from "@/components/PremiumCarousel";
-import Slider from "react-slick";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import colleges from "@/data/colleges";
@@ -51,42 +50,18 @@ import {
   FiBook,
 } from "react-icons/fi";
 
-gsap.registerPlugin(ScrollTrigger);
+import blogPosts from "@/data/blog";
 
-const newsItems = [
-  {
-    id: 1,
-    date: "March 5, 2026",
-    tag: "Rankings",
-    headline:
-      "NIRF 2025: IIT Madras Retains #1 Spot for the 7th Consecutive Year Across Engineering Colleges",
-  },
-  {
-    id: 2,
-    date: "February 28, 2026",
-    tag: "Exams",
-    headline:
-      "JEE Advanced 2025 Applications Now Open — Deadline Set for March 15, Register Without Delay",
-  },
-  {
-    id: 3,
-    date: "February 20, 2026",
-    tag: "Admissions",
-    headline:
-      "VIT Vellore Launches New B.Tech Programme in Artificial Intelligence & Data Science for 2026",
-  },
-  {
-    id: 4,
-    date: "February 15, 2026",
-    tag: "Exams",
-    headline:
-      "NEET UG 2025 Application Window Extended to February 28 — NMC Official Notification Released",
-  },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const router = useRouter();
   const [mounted, setMounted] = React.useState(false);
+
+  // Get latest 4 blog posts for news
+  const latestNews = [...blogPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 4);
 
   React.useEffect(() => {
     setMounted(true);
@@ -147,8 +122,13 @@ export default function Home() {
       {/* ══════════════════════════════
           HERO
       ══════════════════════════════ */}
-      <section className="hero" style={{ padding: "50px" }} ref={heroRef}>
+      <section
+        className="hero hero-section"
+        style={{ padding: "30px 50px 100px" }}
+        ref={heroRef}
+      >
         <div className="hero-gradient-bg" />
+        {/* Background image removed as requested */}
         <div className="hero-floating-orb hero-orb-1" />
         <div className="hero-floating-orb hero-orb-2" />
         <div className="hero-floating-orb hero-orb-3" />
@@ -221,7 +201,7 @@ export default function Home() {
                 flex: 1,
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "-110px",
+                marginTop: "-40px",
               }}
             >
               <FloatingCard
@@ -315,7 +295,7 @@ export default function Home() {
             </p>
           </div>
 
-          <FeaturedCollegesRow colleges={colleges.slice(0, 3)} />
+          <FeaturedCollegesRow colleges={colleges.slice(0, 15)} />
 
           <div style={{ textAlign: "center", marginTop: "48px" }}>
             <AntiGravityButton
@@ -382,7 +362,7 @@ export default function Home() {
               </h2>
             </div>
             <button
-              onClick={() => router.push("/news")}
+              onClick={() => router.push("/blog")}
               style={{
                 background: "transparent",
                 border: "none",
@@ -399,16 +379,18 @@ export default function Home() {
           </div>
 
           <div
+            className="news-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
               gap: "20px",
             }}
           >
-            {newsItems.map((item) => (
+            {latestNews.map((item) => (
               <div
                 key={item.id}
                 className="news-item"
+                onClick={() => router.push(`/blog/${item.slug}`)}
                 style={{
                   background: "#ffffff",
                   border: "1px solid var(--border)",
@@ -454,7 +436,7 @@ export default function Home() {
                       borderRadius: "6px",
                     }}
                   >
-                    {item.tag}
+                    {item.category}
                   </span>
                 </div>
                 <h3
@@ -467,7 +449,7 @@ export default function Home() {
                     flex: 1,
                   }}
                 >
-                  {item.headline}
+                  {item.title}
                 </h3>
                 <div
                   style={{

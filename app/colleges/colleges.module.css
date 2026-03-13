@@ -1,0 +1,105 @@
+.heroSection {
+  position: relative;
+  padding: 100px 0 60px 0;
+  overflow: hidden;
+}
+
+.heroContent {
+  max-width: 800px;
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.heroDesc {
+  font-size: 1.2rem;
+  color: white;
+  line-height: 1.6;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 18px 56px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  font-size: 1rem;
+}
+
+.filterTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 24px;
+}
+
+.filterButton {
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* Tablet */
+
+@media (max-width: 1024px) {
+  .heroTitle {
+    font-size: 2.4rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+  .heroSection {
+    padding: 80px 0 40px 0;
+  }
+
+  .heroContent {
+    text-align: center;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroDesc {
+    font-size: 1rem;
+  }
+
+  .filterTabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .filterButton {
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+}

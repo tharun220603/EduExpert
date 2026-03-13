@@ -65,118 +65,72 @@ export default function CollegesPage() {
         ref={heroRef}
         style={{
           position: "relative",
-          padding: "140px 0 100px",
-          borderBottom: "1px solid var(--border)",
-          background: "#080a1e",
+          padding: "100px 0 60px 0",
           overflow: "hidden",
-          color: "#ffffff",
         }}
       >
-        {/* Banner Image with Overlay */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <img
-            src="/coleges_page_banner.png"
-            alt="Colleges Banner"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              opacity: 0.5,
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to right, rgba(8, 10, 30, 0.9), rgba(8, 10, 30, 0.4))",
-            }}
-          />
-        </div>
-
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `
+              linear-gradient(
+                135deg,
+                rgba(32, 34, 39, 0.65),
+                rgba(26, 25, 31, 0.65)
+              ),
+              url('/coleges_page_banner.png')
+            `,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            zIndex: 0,
+          }}
+        />
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div className="page-hero-content">
-            <span
-              className="badge"
-              style={{
-                marginBottom: "24px",
-                padding: "8px 16px",
-                fontSize: "0.85rem",
-                background: "rgba(255,255,255,0.1)",
-                backdropFilter: "blur(10px)",
-                color: "#ffffff",
-                border: "1px solid rgba(255,255,255,0.2)",
-              }}
-            >
-              🏛️ College Explorer
-            </span>
+          <div
+            className="page-hero-content"
+            style={{ maxWidth: "800px", margin: "0" }}
+          >
+            <span className="badge badge-blue">🏛️ COLLEGE EXPLORER</span>
             <h1
               style={{
-                color: "#ffffff",
-                fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
-                fontWeight: 900,
-                letterSpacing: "-0.04em",
-                lineHeight: 1.1,
+                fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                fontWeight: 800,
+                color: "white",
+                marginBottom: "24px",
               }}
             >
               Find Your Perfect College
             </h1>
             <p
               style={{
-                color: "rgba(255,255,255,0.8)",
-                fontSize: "1.25rem",
-                maxWidth: "650px",
+                fontSize: "1.2rem",
+                color: "white",
                 lineHeight: 1.6,
-                marginTop: "20px",
-                fontWeight: 500,
               }}
             >
               Explore top-ranked Southern Indian colleges across Engineering,
-              Medical, Arts &amp; Science, Law and Management.
+              Medical, Arts & Science, Law and Management.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Top Ranked Slider */}
-      <ScrollFloatSection
-        className="section"
-        speed={0.8}
-        style={{
-          background: "#ffffff",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)",
-          backgroundSize: "32px 32px",
-        }}
-      >
+      <section className="section bg-white">
         <div className="container">
           <div className="section-header" ref={topRankedHeaderRef}>
-            <span
-              className="badge"
-              style={{
-                background: "rgba(245, 158, 11, 0.2)",
-                color: "#fbbf24",
-                border: "1px solid rgba(245, 158, 11, 0.3)",
-              }}
-            >
-              PREMIUM SELECTION
-            </span>
-            <h2 style={{ marginTop: "16px", color: "#ffffff" }}>
-              🥇{" "}
-              <span style={{ color: "var(--accent-light)" }}>
-                Top Ranked Colleges
-              </span>{" "}
-            </h2>
-            <p style={{ color: "rgba(255,255,255,0.6)" }}>
-              NIRF Top institutions from Southern India
-            </p>
+            <span className="badge badge-amber">PREMIUM SELECTION</span>
+            <h2>🥇 Top Ranked Colleges</h2>
+            <p>NIRF Top institutions from Southern India</p>
           </div>
           <div ref={topRankedSliderRef}>
             <FeaturedCollegesRow colleges={topRanked.slice(0, 10)} />
           </div>
         </div>
-      </ScrollFloatSection>
+      </section>
 
       {/* All Colleges with Filter */}
       <ScrollFloatSection
@@ -280,9 +234,12 @@ export default function CollegesPage() {
           <div
             className="filter-tabs"
             style={{
-              marginBottom: "48px",
+              marginBottom: "40px",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "12px",
               borderBottom: "1px solid var(--border)",
-              paddingBottom: "20px",
+              paddingBottom: "24px",
             }}
           >
             {categories.map((cat) => (
@@ -291,33 +248,21 @@ export default function CollegesPage() {
                 className={`filter-tab${activeTab === cat ? " active" : ""}`}
                 onClick={() => setActiveTab(cat)}
                 style={{
-                  background: activeTab === cat ? "var(--primary)" : "#ffffff",
-                  color: activeTab === cat ? "#ffffff" : "var(--text-muted)",
-                  border:
-                    activeTab === cat
-                      ? "1px solid var(--primary)"
-                      : "1px solid var(--border)",
-                  padding: "12px 24px",
-                  borderRadius: "16px",
+                  padding: "10px 20px",
+                  borderRadius: "12px",
                   fontWeight: 700,
-                  fontSize: "0.95rem",
+                  fontSize: "0.9rem",
+                  background:
+                    activeTab === cat ? "var(--primary)" : "var(--bg-section)",
+                  color: activeTab === cat ? "#fff" : "var(--text-muted)",
+                  border: "none",
                   cursor: "pointer",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  boxShadow:
-                    activeTab === cat
-                      ? "0 8px 20px rgba(79, 70, 229, 0.2)"
-                      : "0 2px 4px rgba(0,0,0,0.02)",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {cat}
                 <span
-                  style={{
-                    fontSize: "0.75rem",
-                    opacity: 0.6,
-                  }}
+                  style={{ marginLeft: "8px", opacity: 0.6, fontSize: "0.8em" }}
                 >
                   {cat === "All"
                     ? colleges.length
@@ -335,31 +280,12 @@ export default function CollegesPage() {
                 ))}
               </div>
             ) : (
-              <div
-                className="empty-state-banner"
-                style={{
-                  background: "#f8fafc",
-                  border: "1px solid var(--border)",
-                  padding: "60px",
-                  borderRadius: "32px",
-                  textAlign: "center",
-                }}
-              >
+              <div className="empty-state-banner">
                 <div style={{ fontSize: "3rem", marginBottom: "20px" }}>🔍</div>
-                <h3
-                  style={{ marginBottom: "12px", color: "var(--text-primary)" }}
-                >
-                  No colleges found
-                </h3>
-                <p
-                  style={{
-                    color: "var(--text-muted)",
-                    maxWidth: "400px",
-                    margin: "0 auto 24px",
-                  }}
-                >
-                  We couldn't find any institutions matching your current search
-                  criteria. Try a different keyword or category.
+                <h3>No colleges found</h3>
+                <p style={{ maxWidth: "400px", margin: "0 auto 24px" }}>
+                  We couldn't find any institutions matching your search
+                  criteria.
                 </p>
                 <AntiGravityButton
                   variant="outline"
@@ -368,7 +294,7 @@ export default function CollegesPage() {
                     setActiveTab("All");
                   }}
                 >
-                  Reset All Filters
+                  Reset Filters
                 </AntiGravityButton>
               </div>
             )}
@@ -376,56 +302,50 @@ export default function CollegesPage() {
         </div>
       </ScrollFloatSection>
 
-      {/* Info Banner */}
-      <section
-        className="section-sm"
-        style={{ background: "#ffffff", borderTop: "1px solid var(--border)" }}
-      >
+      <section className="section bg-white">
         <div className="container">
           <div
-            className="cta-banner cta-shimmer"
+            className="cta-banner"
             ref={ctaRef}
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "24px",
-              flexWrap: "wrap",
-              textAlign: "left",
-              background: "#f8fafc",
+              background: "var(--bg-section)",
+              borderRadius: "24px",
+              padding: "40px",
               border: "1px solid var(--border)",
-              padding: "48px",
-              borderRadius: "32px",
             }}
           >
-            <div>
-              <h3
-                style={{
-                  color: "var(--text-primary)",
-                  marginBottom: "12px",
-                  fontSize: "1.6rem",
-                }}
+            <div
+              className="flex-responsive"
+              style={{ justifyContent: "space-between", alignItems: "center" }}
+            >
+              <div style={{ textAlign: "left" }}>
+                <h3 style={{ marginBottom: "12px" }}>
+                  Not sure which college to choose?
+                </h3>
+                <p style={{ color: "var(--text-muted)" }}>
+                  Check entrance exams and course requirements to find your best
+                  fit.
+                </p>
+              </div>
+              <div
+                className="flex-responsive"
+                style={{ gap: "12px", width: "auto" }}
               >
-                Not sure which college to choose?
-              </h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "1.05rem" }}>
-                Check entrance exams and course requirements to find your best
-                fit.
-              </p>
-            </div>
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <AntiGravityButton
-                onClick={() => router.push("/exams")}
-                variant="primary"
-              >
-                View Exams <FiArrowRight />
-              </AntiGravityButton>
-              <AntiGravityButton
-                onClick={() => router.push("/courses")}
-                variant="outline"
-              >
-                Browse Courses
-              </AntiGravityButton>
+                <AntiGravityButton
+                  onClick={() => router.push("/exams")}
+                  variant="primary"
+                  className="w-full-mobile"
+                >
+                  View Exams
+                </AntiGravityButton>
+                <AntiGravityButton
+                  onClick={() => router.push("/courses")}
+                  variant="outline"
+                  className="w-full-mobile"
+                >
+                  Courses
+                </AntiGravityButton>
+              </div>
             </div>
           </div>
         </div>

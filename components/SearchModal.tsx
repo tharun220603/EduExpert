@@ -83,6 +83,7 @@ export default function SearchModal({
     >
       <div 
         ref={modalRef}
+        className="search-modal"
         style={{
           width: "80vw",
           height: "70vh",
@@ -147,7 +148,7 @@ export default function SearchModal({
               <div 
                 key={college.id}
                 onClick={() => {
-                  router.push(`/college/${college.id}`);
+                  router.push(`/college/${college.slug || college.id}`);
                   onClose();
                 }}
                 style={{

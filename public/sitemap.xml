@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Pages -->
+  <url>
+    <loc>https://eduexpert.in/</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://eduexpert.in/colleges</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eduexpert.in/exams</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eduexpert.in/courses</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eduexpert.in/blog</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://eduexpert.in/about</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://eduexpert.in/contact</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Colleges -->
+  <url><loc>https://eduexpert.in/college/iit-madras</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/nit-trichy</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/vit-vellore</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/srm-chennai</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/psg-tech-coimbatore</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/rv-college-bangalore</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/manipal-mit</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/amrita-coimbatore</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/ssn-chennai</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/cmc-vellore</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/iiit-hyderabad</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/mepco-schlenk</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/tce-madurai</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/bits-hyderabad</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/st-johns-medical</loc><priority>0.7</priority></url>
+
+  <!-- Exams -->
+  <url><loc>https://eduexpert.in/exams/jee-advanced</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/exams/neet-ug</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/exams/tnea</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/exams/viteee</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/exams/kcet</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/exams/srmjee</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/exams/aeee</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/exams/bitsat</loc><priority>0.6</priority></url>
+
+  <!-- Courses -->
+  <url><loc>https://eduexpert.in/courses/btech-cse</loc><priority>0.5</priority></url>
+  <url><loc>https://eduexpert.in/courses/mbbs</loc><priority>0.5</priority></url>
+  <url><loc>https://eduexpert.in/courses/btech-ai-ds</loc><priority>0.5</priority></url>
+  <url><loc>https://eduexpert.in/courses/barch</loc><priority>0.5</priority></url>
+  <url><loc>https://eduexpert.in/courses/btech-mechanical</loc><priority>0.5</priority></url>
+  <url><loc>https://eduexpert.in/courses/bds</loc><priority>0.5</priority></url>
+
+  <!-- Blog Posts -->
+  <url><loc>https://eduexpert.in/blog/choosing-right-engineering-college</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/blog/rise-of-ai-data-science-courses</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/blog/neet-2026-preparation-mistakes</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/blog/nirf-2025-iit-madras-retains-top-spot</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/blog/jee-advanced-2025-applications-open</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/blog/vit-vellore-new-ai-ds-programme</loc><priority>0.6</priority></url>
+  <url><loc>https://eduexpert.in/blog/neet-ug-2025-application-extension</loc><priority>0.6</priority></url>
+</urlset>

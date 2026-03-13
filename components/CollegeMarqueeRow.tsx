@@ -17,7 +17,7 @@ function MarqueeCard({ college }: { college: College }) {
 
   return (
     <div
-      onClick={() => router.push(`/college/${college.id}`)}
+      onClick={() => router.push(`/college/${college.slug || college.id}`)}
       style={{
         flex: "0 0 380px",
         height: "480px",

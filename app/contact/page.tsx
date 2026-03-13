@@ -46,30 +46,52 @@ export default function ContactPage() {
       <section
         className="page-hero"
         ref={heroRef}
-        style={{ background: "transparent", padding: "120px 0 60px 0" }}
+        style={{
+          position: "relative",
+          padding: "100px 0 60px 0",
+          overflow: "hidden",
+        }}
       >
-        <div className="container">
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `
+              linear-gradient(
+                135deg,
+                rgba(32, 34, 39, 0.65),
+                rgba(26, 25, 31, 0.65)
+              ),
+              url('/contact_banner.jpg')
+            `,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            zIndex: 0,
+          }}
+        />
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
           <div
             className="page-hero-content"
-            style={{ textAlign: "center", maxWidth: "800px", margin: "0 auto" }}
+            style={{ maxWidth: "800px", margin: "0" }}
           >
-            <span className="badge badge-blue" style={{ marginBottom: "20px" }}>
-              📞 CONTACT US
-            </span>
+            <span className="badge badge-blue">📞 CONTACT US</span>
             <h1
               style={{
                 fontSize: "clamp(2.5rem, 6vw, 4rem)",
                 fontWeight: 800,
-                color: "var(--text-primary)",
+                color: "white",
+                marginBottom: "24px",
               }}
             >
-              Get in Touch with{" "}
-              <span style={{ color: "var(--primary)" }}>Our Experts</span>
+              Get in Touch with Our Experts
             </h1>
             <p
               style={{
                 fontSize: "1.2rem",
-                color: "var(--text-muted)",
+                color: "white",
                 lineHeight: 1.6,
               }}
             >
@@ -586,29 +608,7 @@ export default function ContactPage() {
           background: "var(--bg-section)",
           borderTop: "1px solid var(--border)",
         }}
-      >
-        <div className="container" style={{ textAlign: "center" }}>
-          <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-            <h2
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: 800,
-                color: "var(--text-primary)",
-                marginBottom: "12px",
-              }}
-            >
-              Need Immediate Assistance?
-            </h2>
-            <p style={{ color: "var(--text-muted)", marginBottom: "24px" }}>
-              Our counsellors are available online for chat and video calls
-              during working hours.
-            </p>
-            <AntiGravityButton variant="ghost">
-              <FiMessageSquare /> Start Live Chat
-            </AntiGravityButton>
-          </div>
-        </div>
-      </section>
+      ></section>
     </div>
   );
 }

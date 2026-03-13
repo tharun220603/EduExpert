@@ -2,7 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import { FiBook, FiMenu, FiX, FiSearch } from "react-icons/fi";
+import { FiBook, FiMenu, FiX, FiSearch, FiHome, FiGrid, FiAward, FiBookOpen, FiPhoneCall } from "react-icons/fi";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ApplyFormModal from "./ApplyFormModal";
@@ -11,12 +11,13 @@ import SearchModal from "./SearchModal";
 gsap.registerPlugin(ScrollTrigger);
 
 const navLinks = [
-  { path: "/", label: "Home" },
-  { path: "/colleges", label: "Colleges" },
-  { path: "/exams", label: "Exams" },
-  { path: "/courses", label: "Courses" },
-  { path: "/about", label: "About" },
-  { path: "/contact", label: "Contact" },
+  { path: "/", label: "Home", icon: <FiHome /> },
+  { path: "/colleges", label: "Colleges", icon: <FiGrid /> },
+  { path: "/exams", label: "Exams", icon: <FiAward /> },
+  { path: "/courses", label: "Courses", icon: <FiBookOpen /> },
+  { path: "/blog", label: "Blog", icon: <FiBook /> },
+  { path: "/about", label: "About", icon: <FiBook /> },
+  { path: "/contact", label: "Contact", icon: <FiPhoneCall /> },
 ];
 
 export default function Navbar() {
@@ -117,7 +118,7 @@ export default function Navbar() {
               </div>
 
               <button
-                className="hamburger"
+                className="hamburger hidden-mobile"
                 onClick={() => setOpen((o) => !o)}
                 aria-label="Menu"
               >
@@ -126,6 +127,20 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+      </nav>
+
+      {/* ── Bottom Navigation (Mobile & Tablet) – route icons, not hamburger ── */}
+      <nav className="bottom-nav hidden-desktop" aria-label="Bottom navigation">
+        {navLinks.map((link) => (
+          <button
+            key={link.path}
+            onClick={() => handleNavigate(link.path)}
+            className={`bottom-nav-item ${pathname === link.path ? "active" : ""}`}
+          >
+            {link.icon}
+            <span>{link.label}</span>
+          </button>
+        ))}
       </nav>
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

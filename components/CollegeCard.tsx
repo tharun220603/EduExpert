@@ -2,18 +2,20 @@
 
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
-import { FiMapPin, FiStar, FiChevronRight } from "react-icons/fi";
+import { FiMapPin, FiStar, FiChevronRight, FiAward } from "react-icons/fi";
 import { College } from "@/data/colleges";
+import styles from "./CollegeCard.module.css";
+import { motion } from "framer-motion";
 
 interface CollegeCardProps {
   college: College;
+  isFeatured?: boolean;
 }
 
-export default function CollegeCard({ college }: CollegeCardProps) {
+export default function CollegeCard({ college, isFeatured }: CollegeCardProps) {
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Fallback high-quality unsplash images matched vaguely to college vibes
   const bgImage =
     college.image ||
     (college.type.includes("Engineering")
@@ -23,251 +25,96 @@ export default function CollegeCard({ college }: CollegeCardProps) {
         : "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800");
 
   return (
-    <div
+    <motion.div
       ref={cardRef}
       onClick={() => router.push(`/college/${college.slug || college.id}`)}
-      className="college-card"
-      style={{
-        background: "#ffffff",
-        border: "1px solid var(--border)",
-        borderRadius: "24px",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-        boxShadow: "0 8px 30px rgba(0,0,0,0.04)",
-      }}
+      className={`${styles.card} ${isFeatured ? styles.big : ""}`}
+      whileHover={isFeatured ? { y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.08)" } : { y: -8 }}
+      whileTap={{ scale: 0.98 }}
+      initial={isFeatured ? { opacity: 0, y: 20 } : { opacity: 1 }}
+      whileInView={isFeatured ? { opacity: 1, y: 0 } : { opacity: 1 }}
+      viewport={{ once: true }}
     >
-      {/* IMAGE SECTION */}
-      <div
-        className="college-image"
-        style={{
-          height: "220px",
-          position: "relative",
-          overflow: "hidden",
-          flexShrink: 0,
-        }}
-      >
+      {/* ── IMAGE ── */}
+      <div className={`${styles.imageWrap} ${isFeatured ? styles.big : ""}`}>
         <img
           src={bgImage}
           alt={college.name}
           loading="lazy"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            transition: "transform 0.6s ease",
-          }}
+          className={styles.image}
         />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 60%)",
-          }}
-        />
+        <div className={styles.imageOverlay} />
 
-        {/* Rating overlay */}
-        <div
-          style={{
-            position: "absolute",
-            top: "16px",
-            right: "16px",
-            background: "rgba(255,255,255,0.9)",
-            backdropFilter: "blur(8px)",
-            padding: "5px 10px",
-            borderRadius: "10px",
-            display: "flex",
-            alignItems: "center",
-            gap: "4px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-            zIndex: 10,
-          }}
-        >
-          <FiStar fill="#fbbf24" color="#fbbf24" size={14} />
-          <span
-            style={{
-              fontSize: "0.85rem",
-              fontWeight: 800,
-              color: "var(--text-primary)",
-            }}
-          >
-            {college.rating}
-          </span>
+        {/* Top left tags container for Featured */}
+        {isFeatured ? (
+          <div className={styles.tagsLeft}>
+            <div className={styles.typeTag}>{college.type}</div>
+            {college.nirfRank && (
+              <div className={styles.nirfBadge}>
+                <FiAward size={12} />
+                <span>NIRF #{college.nirfRank}</span>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            {/* Standard NIRF position */}
+            {college.nirfRank && (
+              <div className={styles.nirfBadge}>
+                <FiAward size={12} />
+                <span>NIRF #{college.nirfRank}</span>
+              </div>
+            )}
+            {/* Standard type ribbon */}
+            <div className={styles.typeRibbon}>{college.type}</div>
+          </>
+        )}
+
+        {/* Rating pill (Same for both but can use variant styles) */}
+        <div className={styles.ratingPill}>
+          <FiStar className={styles.starIcon} size={13} />
+          <span>{college.rating}</span>
         </div>
-
-        {/* NIRF overlay */}
-        {college.nirfRank && (
-          <div
-            style={{
-              position: "absolute",
-              top: "16px",
-              left: "16px",
-              background: "linear-gradient(135deg, #f59e0b, #d97706)",
-              padding: "5px 12px",
-              borderRadius: "10px",
-              color: "white",
-              fontSize: "0.75rem",
-              fontWeight: 800,
-              boxShadow: "0 4px 12px rgba(217,119,6,0.3)",
-              zIndex: 10,
-            }}
-          >
-            NIRF #{college.nirfRank}
-          </div>
-        )}
-
-        {/* Logo overlay */}
-        {college.logo && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "-20px",
-              right: "20px",
-              width: "56px",
-              height: "56px",
-              background: "#ffffff",
-              borderRadius: "14px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-              zIndex: 15,
-              padding: "8px",
-              border: "1px solid var(--border)",
-            }}
-          >
-            <img
-              src={college.logo}
-              alt="Logo"
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
-            />
-          </div>
-        )}
       </div>
 
-      {/* INFO SECTION */}
-      <div
-        style={{
-          padding: "28px 20px 20px",
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-        }}
-      >
-        <div style={{ marginBottom: "12px" }}>
-          <span
-            className="badge badge-blue"
-            style={{ fontSize: "0.7rem", padding: "4px 10px" }}
-          >
-            {college.type}
-          </span>
-        </div>
+      {/* ── LOGO ── */}
+      <div className={`${styles.logoWrap} ${isFeatured ? styles.big : ""}`}>
+        <img
+          src={college.logo || "https://img.icons8.com/color/96/university.png"}
+          alt="Logo"
+          className={styles.logo}
+        />
+      </div>
 
-        <h3
-          style={{
-            color: "var(--text-primary)",
-            fontSize: "1.2rem",
-            fontWeight: 800,
-            marginBottom: "8px",
-            lineHeight: 1.3,
-            letterSpacing: "-0.01em",
-          }}
-        >
-          {college.name}
-        </h3>
+      {/* ── BODY ── */}
+      <div className={`${styles.body} ${isFeatured ? styles.big : ""}`}>
+        <h3 className={`${styles.name} ${isFeatured ? styles.big : ""}`}>{college.name}</h3>
 
-        <p
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            color: "var(--text-muted)",
-            fontSize: "0.85rem",
-            marginBottom: "16px",
-          }}
-        >
-          <FiMapPin size={15} color="var(--primary)" />
-          <span style={{ fontWeight: 500 }}>
-            {college.city}, {college.state}
-          </span>
+        <p className={`${styles.location} ${isFeatured ? styles.big : ""}`}>
+          <FiMapPin size={13} className={styles.pinIcon} />
+          {college.city}, {college.state}
         </p>
 
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "6px",
-            marginBottom: "auto",
-          }}
-        >
+        {/* Highlights */}
+        <div className={styles.highlights}>
           {college.highlights.slice(0, 2).map((h) => (
-            <span
-              key={h}
-              style={{
-                fontSize: "0.7rem",
-                padding: "4px 10px",
-                background: "#f8fafc",
-                borderRadius: "8px",
-                color: "var(--text-mid)",
-                border: "1px solid var(--border)",
-                fontWeight: 500,
-              }}
-            >
+            <span key={h} className={styles.highlight}>
               {h}
             </span>
           ))}
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderTop: "1px solid var(--border)",
-            paddingTop: "16px",
-            marginTop: "20px",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontSize: "0.65rem",
-                color: "var(--text-muted)",
-                textTransform: "uppercase",
-                fontWeight: 700,
-                letterSpacing: "0.02em",
-                marginBottom: "2px",
-              }}
-            >
-              Avg Fees
-            </div>
-            <div
-              style={{
-                color: "var(--text-primary)",
-                fontWeight: 800,
-                fontSize: "1.05rem",
-              }}
-            >
-              {college.fees}
-            </div>
+        {/* Footer */}
+        <div className={styles.footer}>
+          <div className={styles.fees}>
+            <span className={`${styles.feesLabel} ${isFeatured ? styles.big : ""}`}>Avg Fees</span>
+            <span className={`${styles.feesValue} ${isFeatured ? styles.big : ""}`}>{college.fees}</span>
           </div>
-          <div
-            style={{
-              fontSize: "0.9rem",
-              color: "var(--primary)",
-              fontWeight: 700,
-              display: "flex",
-              alignItems: "center",
-              gap: "2px",
-            }}
-          >
-            Details <FiChevronRight />
+          <div className={`${styles.detailsBtn} ${isFeatured ? styles.big : ""}`}>
+            Details <FiChevronRight size={15} />
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

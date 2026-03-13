@@ -33,7 +33,7 @@ function ExamCard({ exam }: { exam: Exam }) {
 
   return (
     <div
-      onClick={() => router.push(`/exams/${exam.id}`)}
+      onClick={() => router.push(`/exams/${exam.slug || exam.id}`)}
       className="college-card"
       style={{
         height: "100%",
@@ -98,7 +98,7 @@ function ExamCard({ exam }: { exam: Exam }) {
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              paddingRight: "60px" // Space for the badge
+              paddingRight: "60px", // Space for the badge
             }}
           >
             {exam.name}
@@ -161,32 +161,109 @@ function ExamCard({ exam }: { exam: Exam }) {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div style={{ color: "var(--primary)", background: "var(--primary-light)", padding: "8px", borderRadius: "10px" }}>
+            <div
+              style={{
+                color: "var(--primary)",
+                background: "var(--primary-light)",
+                padding: "8px",
+                borderRadius: "10px",
+              }}
+            >
               <FiCalendar size={16} />
             </div>
             <div>
-              <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>Exam Month</div>
-              <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)" }}>{exam.examMonth}</div>
+              <div
+                style={{
+                  fontSize: "0.65rem",
+                  color: "var(--text-muted)",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                Exam Month
+              </div>
+              <div
+                style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                }}
+              >
+                {exam.examMonth}
+              </div>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div style={{ color: "var(--warning)", background: "rgba(245, 158, 11, 0.1)", padding: "8px", borderRadius: "10px" }}>
+            <div
+              style={{
+                color: "var(--warning)",
+                background: "rgba(245, 158, 11, 0.1)",
+                padding: "8px",
+                borderRadius: "10px",
+              }}
+            >
               <FiUsers size={16} />
             </div>
             <div>
-              <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.02em" }}>Total Seats</div>
-              <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)" }}>{exam.totalSeats || "Varies"}</div>
+              <div
+                style={{
+                  fontSize: "0.65rem",
+                  color: "var(--text-muted)",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                Total Seats
+              </div>
+              <div
+                style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                }}
+              >
+                {exam.totalSeats || "Varies"}
+              </div>
             </div>
           </div>
         </div>
 
-        <div style={{ marginTop: "auto", borderTop: "1px solid var(--border)", paddingTop: "24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ color: "var(--primary)", fontSize: "0.95rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px" }}>
-                Details <FiArrowRight size={16} />
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "4px", color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>
-                <FiInfo size={14} /> {exam.conductingBody} Level
-            </div>
+        <div
+          style={{
+            marginTop: "auto",
+            borderTop: "1px solid var(--border)",
+            paddingTop: "24px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              color: "var(--primary)",
+              fontSize: "0.95rem",
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            Details <FiArrowRight size={16} />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              color: "var(--text-muted)",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+            }}
+          >
+            <FiInfo size={14} /> {exam.conductingBody} Level
+          </div>
         </div>
       </div>
     </div>
@@ -218,38 +295,52 @@ export default function ExamsPage() {
       <section
         className="page-hero"
         ref={heroRef}
-        style={{ background: "transparent", padding: "80px 0 40px 0" }}
+        style={{
+          position: "relative",
+          padding: "80px 0 40px 0",
+          overflow: "hidden",
+        }}
       >
-        <div className="container">
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `
+    linear-gradient(
+      135deg,
+      rgba(32, 34, 39, 0.65),
+      rgba(26, 25, 31, 0.65)
+    ),
+    url('/Exam_banner.jpg')
+  `,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            zIndex: 0,
+          }}
+        />
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
           <div
             className="page-hero-content"
-            style={{ maxWidth: "800px", margin: "0 auto" }}
+            style={{ maxWidth: "800px", margin: "0" }}
           >
-            <span
-              className="badge badge-blue"
-              style={{
-                marginBottom: "20px",
-                padding: "6px 16px",
-                fontSize: "0.85rem",
-              }}
-            >
-              🎯 ADMISSION GUIDE 2026
-            </span>
+            <span className="badge badge-blue">🎯 Admission Guide </span>
             <h1
               style={{
                 fontSize: "clamp(2.5rem, 6vw, 4rem)",
                 marginBottom: "24px",
-                color: "var(--text-primary)",
+                color: "white",
                 fontWeight: 800,
               }}
             >
-              Master Your{" "}
-              <span style={{ color: "var(--primary)" }}>Entrance Exams</span>
+              Master Your <span style={{ color: "white" }}>Entrance Exams</span>
             </h1>
             <p
               style={{
                 fontSize: "1.15rem",
-                color: "var(--text-muted)",
+                color: "white",
                 lineHeight: 1.6,
                 marginBottom: "40px",
               }}
@@ -317,7 +408,8 @@ export default function ExamsPage() {
             className="cards-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))",
+              gridTemplateColumns:
+                "repeat(auto-fill, minmax(min(100%, 340px), 1fr))",
               gap: "28px",
             }}
           >

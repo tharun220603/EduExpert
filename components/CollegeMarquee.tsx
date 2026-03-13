@@ -62,7 +62,7 @@ export default function CollegeMarquee() {
           {[...logos, ...logos, ...logos, ...logos].map((college, idx) => (
             <div
               key={idx}
-              onClick={() => router.push(`/college/${college.id}`)}
+              onClick={() => router.push(`/college/${college.slug || college.id}`)}
               style={{
                 flexShrink: 0,
                 display: "flex",

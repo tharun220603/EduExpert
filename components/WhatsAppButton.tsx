@@ -12,44 +12,11 @@ export default function FloatingActionButtons() {
   const callUrl = `tel:${callNumber}`;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "30px",
-        right: "30px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "15px",
-        zIndex: 9999,
-      }}
-    >
+    <div className="floating-actions">
       {/* Phone Button */}
       <a
         href={callUrl}
-        style={{
-          width: "60px",
-          height: "60px",
-          backgroundColor: "var(--primary)",
-          color: "#fff",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "24px",
-          boxShadow: "0 10px 25px rgba(79, 70, 229, 0.3)",
-          transition: "all 0.3s ease",
-          cursor: "pointer",
-          textDecoration: "none",
-          position: "relative"
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.1) translateY(-5px)";
-          e.currentTarget.style.boxShadow = "0 15px 30px rgba(79, 70, 229, 0.4)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "scale(1) translateY(0)";
-          e.currentTarget.style.boxShadow = "0 10px 25px rgba(79, 70, 229, 0.3)";
-        }}
+        className="phone-btn"
         title="Call Us"
       >
         <FaPhoneAlt />
@@ -60,48 +27,91 @@ export default function FloatingActionButtons() {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        style={{
-          width: "60px",
-          height: "60px",
-          backgroundColor: "#25D366",
-          color: "#fff",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "30px",
-          boxShadow: "0 10px 25px rgba(37, 211, 102, 0.3)",
-          transition: "all 0.3s ease",
-          cursor: "pointer",
-          textDecoration: "none",
-          position: "relative"
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.1) translateY(-5px)";
-          e.currentTarget.style.boxShadow = "0 15px 30px rgba(37, 211, 102, 0.4)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "scale(1) translateY(0)";
-          e.currentTarget.style.boxShadow = "0 10px 25px rgba(37, 211, 102, 0.3)";
-        }}
+        className="whatsapp-btn"
         title="Chat on WhatsApp"
       >
         <FaWhatsapp />
         
         {/* Pulse Effect for WhatsApp */}
-        <span style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: "50%",
-          border: "2px solid #25D366",
-          animation: "whatsapp-pulse 2s infinite"
-        }} />
+        <span className="pulse-effect" />
       </a>
 
       <style jsx>{`
+        .floating-actions {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          z-index: 9999;
+        }
+
+        .phone-btn, .whatsapp-btn {
+          width: 60px;
+          height: 60px;
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          text-decoration: none;
+          position: relative;
+        }
+
+        .phone-btn {
+          background-color: var(--primary);
+          box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .whatsapp-btn {
+          background-color: #25D366;
+          box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+          font-size: 30px;
+        }
+
+        .phone-btn:hover, .whatsapp-btn:hover {
+          transform: scale(1.1) translateY(-5px);
+        }
+
+        .phone-btn:hover {
+          box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4);
+        }
+
+        .whatsapp-btn:hover {
+          box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+        }
+
+        .pulse-effect {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 2px solid #25D366;
+          animation: whatsapp-pulse 2s infinite;
+        }
+
         @keyframes whatsapp-pulse {
           0% { transform: scale(1); opacity: 0.8; }
           100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        @media (max-width: 1024px) {
+          .floating-actions {
+            bottom: 110px;
+            right: 20px;
+            gap: 12px;
+          }
+          .phone-btn, .whatsapp-btn {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+          }
+          .whatsapp-btn {
+            font-size: 24px;
+          }
         }
       `}</style>
     </div>

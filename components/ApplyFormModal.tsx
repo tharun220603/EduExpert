@@ -118,6 +118,7 @@ export default function ApplyFormModal({
         >
           <div
             ref={modalRef}
+            className="apply-modal"
             style={{
               background: "var(--glass-strong)",
               backdropFilter: "blur(24px)",
