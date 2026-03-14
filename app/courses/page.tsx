@@ -246,7 +246,7 @@ export default function CoursesPage() {
   return (
     <>
       <section
-        className="page-hero"
+        className="page-hero page-hero-textured page-hero-banner-courses"
         ref={heroRef}
         style={{
           position: "relative",
@@ -255,26 +255,15 @@ export default function CoursesPage() {
         }}
       >
         <div
+          className="page-hero-media"
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundImage: `
-              linear-gradient(
-                135deg,
-                rgba(32, 34, 39, 0.65),
-                rgba(26, 25, 31, 0.65)
-              ),
-              url('/courses_banner.png')
-            `,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            zIndex: 0,
+            backgroundImage: "url('/courses_banner.png')",
           }}
         />
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+        <div className="page-hero-tint" />
+        <div className="page-hero-texture" />
+        <div className="page-hero-vignette" />
+        <div className="container page-hero-textured-content">
           <div
             className="page-hero-content"
             style={{ maxWidth: "800px", margin: "0" }}

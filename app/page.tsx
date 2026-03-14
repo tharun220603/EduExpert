@@ -1,17 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import CollegeMarquee from "@/components/CollegeMarquee";
 import ReviewMarquee from "@/components/ReviewMarquee";
 import FeaturedCollegesRow from "@/components/FeaturedCollegesRow";
 import LocationsRow from "@/components/LocationsRow";
 import Counter from "@/components/Counter";
-import PremiumCarousel from "@/components/PremiumCarousel";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import colleges from "@/data/colleges";
-import exams from "@/data/exams";
-import courses from "@/data/courses";
 import locations from "@/data/locations";
 import reviews from "@/data/reviews";
 import FloatingCard from "@/components/FloatingCard";
@@ -26,26 +23,12 @@ import {
   useSectionHeaderReveal,
   useParallax,
   useScaleReveal,
-  useFloatingCards,
   useCursorParallaxField,
   useFloatingEntrance,
 } from "@/hooks/useGsapAnimations";
 import {
   FiArrowRight,
-  FiMapPin,
-  FiStar,
-  FiChevronLeft,
-  FiChevronRight,
-  FiCalendar,
-  FiClock,
-  FiUsers,
-  FiMail,
-  FiPhone,
-  FiMessageSquare,
-  FiCheckCircle,
   FiShield,
-  FiTrendingUp,
-  FiGlobe,
   FiAward,
   FiBook,
 } from "react-icons/fi";
@@ -57,6 +40,16 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
   const router = useRouter();
   const [mounted, setMounted] = React.useState(false);
+  const [heroParticles] = React.useState(() =>
+    [...Array(12)].map(() => ({
+      left: `${8 + Math.random() * 84}%`,
+      top: `${5 + Math.random() * 90}%`,
+      width: `${2 + Math.random() * 4}px`,
+      height: `${2 + Math.random() * 4}px`,
+      animationDelay: `${Math.random() * 6}s`,
+      animationDuration: `${4 + Math.random() * 5}s`,
+    })),
+  );
 
   // Get latest 4 blog posts for news
   const latestNews = [...blogPosts]
@@ -78,7 +71,6 @@ export default function Home() {
   const newsRef = useRef<HTMLDivElement>(null);
   const featuredHeaderRef = useRef<HTMLDivElement>(null);
   const locationsHeaderRef = useRef<HTMLDivElement>(null);
-  const locationsSliderRef = useRef<any>(null);
   const reviewsHeaderRef = useRef<HTMLDivElement>(null);
   const reviewsSliderRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -134,17 +126,17 @@ export default function Home() {
         <div className="hero-floating-orb hero-orb-3" />
         <div className="hero-grid-pattern" />
         <div className="hero-particles">
-          {[...Array(12)].map((_, i) => (
+          {heroParticles.map((particle, i) => (
             <div
               key={i}
               className="hero-particle"
               style={{
-                left: `${8 + Math.random() * 84}%`,
-                top: `${5 + Math.random() * 90}%`,
-                width: `${2 + Math.random() * 4}px`,
-                height: `${2 + Math.random() * 4}px`,
-                animationDelay: `${Math.random() * 6}s`,
-                animationDuration: `${4 + Math.random() * 5}s`,
+                left: particle.left,
+                top: particle.top,
+                width: particle.width,
+                height: particle.height,
+                animationDelay: particle.animationDelay,
+                animationDuration: particle.animationDuration,
               }}
             />
           ))}
@@ -231,7 +223,7 @@ export default function Home() {
       {/* ══════════════════════════════
           STATS STRIP
       ══════════════════════════════ */}
-      <section className="section-sm" style={{ background: "white" }}>
+      <section className="section-sm home-stats-band" style={{ background: "white" }}>
         <div className="container">
           <div className="stats-strip" ref={statsRef}>
             <div className="stats-item">
@@ -264,7 +256,7 @@ export default function Home() {
           FEATURED COLLEGES
       ══════════════════════════════ */}
       <ScrollFloatSection
-        className="section"
+        className="section home-featured-section"
         speed={0.8}
         style={{
           background: "#ffffff",
@@ -318,7 +310,7 @@ export default function Home() {
           COLLEGE MARQUEE
       ══════════════════════════════ */}
       <section
-        className="section-sm"
+        className="section-sm home-marquee-band"
         style={{ background: "rgba(240, 244, 255, 0.3)", padding: "0" }}
       >
         <CollegeMarquee />
@@ -328,7 +320,7 @@ export default function Home() {
           LATEST NEWS
       ══════════════════════════════ */}
       <ScrollFloatSection
-        className="section"
+        className="section home-news-section"
         style={{
           background: "#08090a",
           borderTop: "1px solid rgba(255,255,255,0.05)",
@@ -362,6 +354,7 @@ export default function Home() {
               </h2>
             </div>
             <button
+              className="home-news-link"
               onClick={() => router.push("/blog")}
               style={{
                 background: "transparent",
@@ -379,7 +372,7 @@ export default function Home() {
           </div>
 
           <div
-            className="news-grid"
+            className="news-grid home-news-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
@@ -389,7 +382,7 @@ export default function Home() {
             {latestNews.map((item) => (
               <div
                 key={item.id}
-                className="news-item"
+                className="news-item home-news-card"
                 onClick={() => router.push(`/blog/${item.slug}`)}
                 style={{
                   background: "#ffffff",
@@ -403,18 +396,6 @@ export default function Home() {
                   boxShadow: "0 10px 25px rgba(0,0,0,0.05)",
                   cursor: "pointer",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-8px)";
-                  e.currentTarget.style.borderColor = "var(--primary)";
-                  e.currentTarget.style.boxShadow =
-                    "0 20px 40px rgba(0,0,0,0.12)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.boxShadow =
-                    "0 10px 25px rgba(0,0,0,0.05)";
-                }}
               >
                 <div
                   style={{
@@ -425,6 +406,7 @@ export default function Home() {
                   }}
                 >
                   <span
+                    className="home-news-category"
                     style={{
                       fontSize: "0.65rem",
                       color: "var(--primary)",
@@ -440,6 +422,7 @@ export default function Home() {
                   </span>
                 </div>
                 <h3
+                  className="home-news-title"
                   style={{
                     fontSize: "1rem",
                     fontWeight: 800,
@@ -452,6 +435,7 @@ export default function Home() {
                   {item.title}
                 </h3>
                 <div
+                  className="home-news-footer"
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -470,7 +454,11 @@ export default function Home() {
                   >
                     {item.date}
                   </span>
-                  <FiArrowRight size={14} color="var(--primary)" />
+                  <FiArrowRight
+                    size={14}
+                    color="var(--primary)"
+                    className="home-news-arrow"
+                  />
                 </div>
               </div>
             ))}
@@ -482,7 +470,7 @@ export default function Home() {
           WHY EDUEXPERT
       ══════════════════════════════ */}
       <ScrollFloatSection
-        className="section"
+        className="section home-why-section"
         speed={0.5}
         style={{
           backgroundColor: "#f0f4ff",
@@ -535,7 +523,7 @@ export default function Home() {
             ].map((feature, i) => (
               <FloatingCard
                 key={i}
-                className="feature-card"
+                className="feature-card home-feature-card"
                 style={{
                   padding: "48px 40px",
                   textAlign: "center",
@@ -546,6 +534,7 @@ export default function Home() {
                 }}
               >
                 <div
+                  className="home-feature-icon icon-bounce"
                   style={{
                     width: "72px",
                     height: "72px",
@@ -559,7 +548,6 @@ export default function Home() {
                     margin: "0 auto 28px",
                     border: `1px solid ${feature.color}25`,
                   }}
-                  className="icon-bounce"
                 >
                   {feature.icon}
                 </div>
@@ -592,7 +580,7 @@ export default function Home() {
           COUNSELLING LOCATIONS
       ══════════════════════════════ */}
       <ScrollFloatSection
-        className="section-sm"
+        className="section-sm home-locations-section"
         speed={0.4}
         style={{ background: "rgba(79, 70, 229, 0.02)" }}
       >
@@ -622,7 +610,7 @@ export default function Home() {
           REVIEWS MARQUEE
       ══════════════════════════════ */}
       <section
-        className="section"
+        className="section home-reviews-section"
         style={{
           background: "#08090a",
           borderTop: "1px solid rgba(255,255,255,0.1)",
@@ -674,9 +662,9 @@ export default function Home() {
       {/* ══════════════════════════════
           CTA
       ══════════════════════════════ */}
-      <section className="section-sm">
+      <section className="section-sm home-cta-section">
         <div className="container">
-          <div className="cta-banner cta-shimmer" ref={ctaRef}>
+          <div className="cta-banner cta-shimmer home-cta-card" ref={ctaRef}>
             <div ref={ctaInnerRef}>
               <h2
                 style={{

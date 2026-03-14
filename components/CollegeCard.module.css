@@ -35,8 +35,9 @@
 /* Big variant */
 .card.big {
   border-radius: 28px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.04);
-  height: 400px !important;
+  height: 430px !important;
+  box-shadow: none !important; /* Keep the 'no shadow' look for featured as per current state */
+  margin: 0; /* Remove margin if base .card has no margin anymore */
 }
 
 /* ── IMAGE WRAP ───────────────────────────────────────────── */
@@ -48,7 +49,7 @@
 }
 
 .imageWrap.big {
-  height: 160px;
+  height: 205px;
 }
 
 .image {
@@ -97,7 +98,7 @@
   gap: 5px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
   z-index: 10;
-  font-size: 0.72rem;
+  font-size: 0.64rem;
   font-weight: 800;
   color: #1a1a2e;
   border: 1px solid rgba(255, 255, 255, 0.6);
@@ -107,13 +108,20 @@
 .ratingPill, .ratingTag {
   position: absolute;
   top: 14px;
-  right: 14px;
+  left: 14px; /* Standard position moved to left */
+}
+
+.imageWrap.big .ratingPill {
+  top: auto;
+  bottom: 14px;
+  right: auto;
+  left: 14px;
 }
 
 .nirfBadge {
   position: absolute;
   top: 14px;
-  left: 14px;
+  right: 14px; /* Moved to top-right */
   background: linear-gradient(135deg, #f59e0b, #d97706);
   color: #fff;
   box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
@@ -130,9 +138,7 @@
 
 /* Variant styles when inside tagsLeft (for Big cards) */
 .tagsLeft .nirfBadge {
-  position: static;
-  top: auto;
-  left: auto;
+  display: none; /* Removed from flex flow as it's now absolute in top-right */
 }
 
 .typeTag {
@@ -142,7 +148,7 @@
 /* ── LOGO ─────────────────────────────────────────────────── */
 .logoWrap {
   position: absolute;
-  top: 172px; /* standard fallback */
+  top: 167px; /* moved up by 5px from 172px */
   right: 18px;
   width: 50px;
   height: 50px;
@@ -160,7 +166,7 @@
 }
 
 .logoWrap.big {
-  top: 120px; /* Moved up as requested */
+  top: 165px; /* moved up by 5px from 170px */
   right: 14px;
   width: 56px;
   height: 56px;
@@ -191,7 +197,7 @@
 
 /* ── NAME ─────────────────────────────────────────────────── */
 .name {
-  font-size: 1.1rem;
+  font-size: 0.97rem;
   font-weight: 800;
   color: #0f0f1a;
   margin: 0 0 8px;
@@ -205,7 +211,7 @@
 }
 
 .name.big {
-  font-size: 1.1rem;
+  font-size: 0.97rem;
   margin-bottom: 4px;
   color: #111827;
   line-height: 1.3;
@@ -218,13 +224,13 @@
   align-items: center;
   gap: 5px;
   color: #6b7280;
-  font-size: 0.82rem;
+  font-size: 0.73rem;
   font-weight: 500;
   margin: 0 0 14px;
 }
 
 .location.big {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   margin-bottom: 10px;
   gap: 6px;
 }
@@ -244,7 +250,7 @@
 }
 
 .highlight {
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   padding: 4px 12px;
   background: #f3f4ff;
   border-radius: 8px;
@@ -272,7 +278,7 @@
 }
 
 .feesLabel {
-  font-size: 0.6rem;
+  font-size: 0.53rem;
   color: #9ca3af;
   text-transform: uppercase;
   font-weight: 700;
@@ -280,20 +286,20 @@
 }
 
 .feesLabel.big {
-  font-size: 0.75rem;
+  font-size: 0.57rem;
   text-transform: uppercase;
   font-weight: 600;
 }
 
 .feesValue {
-  font-size: 1rem;
+  font-size: 0.88rem;
   font-weight: 800;
   color: #0f0f1a;
   letter-spacing: -0.01em;
 }
 
 .feesValue.big {
-  font-size: 1.25rem;
+  font-size: 1.01rem;
   color: #111827;
 }
 
@@ -301,7 +307,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.82rem;
+  font-size: 0.73rem;
   font-weight: 700;
   color: #4f46e5;
   background: #f3f4ff;
@@ -316,7 +322,7 @@
   background: transparent;
   color: #4f46e5;
   border: none;
-  font-size: 0.95rem;
+  font-size: 0.84rem;
   padding: 0;
   gap: 4px;
 }
@@ -341,10 +347,10 @@
 
 @media (max-width: 1024px) {
   .imageWrap { height: 190px; }
-  .imageWrap.big { height: 260px; }
-  .logoWrap { top: 154px; width: 46px; height: 46px; }
-  .logoWrap.big { top: 210px; }
-  .name { font-size: 1rem; }
+  .imageWrap.big { height: 250px; }
+  .logoWrap { top: 147px; width: 46px; height: 46px; }
+  .logoWrap.big { top: 205px; }
+  .name { font-size: 0.88rem; }
   .body { padding: 20px 18px 16px; }
 }
 
@@ -355,28 +361,28 @@
   .imageWrap { height: 180px; }
   .imageWrap.big { height: 200px; }
   .card:hover .image { transform: none; }
-  .logoWrap { top: 145px; right: 14px; width: 44px; height: 44px; border-radius: 12px; }
-  .logoWrap.big { top: 160px; right: 10px; width: 48px; height: 48px; border-radius: 10px; }
+  .logoWrap { top: 137px; right: 14px; width: 44px; height: 44px; border-radius: 12px; }
+  .logoWrap.big { top: 155px; right: 10px; width: 48px; height: 48px; border-radius: 10px; }
   
   .tagsLeft { top: 10px; left: 10px; gap: 8px; }
   .ratingPill, .nirfBadge, .typeRibbon, .typeTag, .ratingTag {
-    padding: 3px 8px; font-size: 0.65rem; border-radius: 8px;
+    padding: 3px 8px; font-size: 0.57rem; border-radius: 8px;
   }
-  .ratingPill, .ratingTag { top: 10px; right: 10px; }
-  .nirfBadge { top: 10px; left: 10px; }
+  .ratingPill, .ratingTag { top: 10px; left: 10px; right: auto; }
+  .nirfBadge { top: 10px; right: 10px; left: auto; }
   .typeRibbon { bottom: 10px; left: 10px; }
 
   .body { padding: 18px 16px 14px; }
-  .name { font-size: 1rem; margin-bottom: 6px; }
-  .name.big { font-size: 1.15rem; min-height: auto; margin-bottom: 8px; }
-  .location { font-size: 0.8rem; margin-bottom: 12px; }
+  .name { font-size: 0.88rem; margin-bottom: 6px; }
+  .name.big { font-size: 1.01rem; min-height: auto; margin-bottom: 8px; }
+  .location { font-size: 0.7rem; margin-bottom: 12px; }
   .highlights { gap: 5px; padding-bottom: 8px; }
-  .highlight { font-size: 0.65rem; padding: 3px 9px; }
+  .highlight { font-size: 0.57rem; padding: 3px 9px; }
   .footer { padding-top: 12px; margin-top: 14px; }
-  .feesValue { font-size: 0.95rem; }
-  .feesValue.big { font-size: 1.1rem; }
-  .detailsBtn { font-size: 0.78rem; padding: 6px 14px; border-radius: 10px; }
-  .detailsBtn.big { font-size: 0.85rem; padding: 8px 18px; }
+  .feesValue { font-size: 0.84rem; }
+  .feesValue.big { font-size: 0.97rem; }
+  .detailsBtn { font-size: 0.68rem; padding: 6px 14px; border-radius: 10px; }
+  .detailsBtn.big { font-size: 0.75rem; padding: 8px 18px; }
   .card:hover .detailsBtn { transform: none; }
 }
 
@@ -389,11 +395,11 @@
   .logoWrap.big { top: 140px; width: 44px; height: 44px; }
   .tagsLeft { gap: 6px; }
   .body { padding: 16px 14px 12px; }
-  .name { font-size: 0.95rem; }
-  .name.big { font-size: 1.1rem; }
-  .location { font-size: 0.76rem; margin-bottom: 10px; }
-  .highlight { font-size: 0.62rem; padding: 3px 8px; }
-  .feesLabel { font-size: 0.55rem; }
-  .feesValue { font-size: 0.9rem; }
-  .detailsBtn { font-size: 0.75rem; padding: 5px 12px; }
+  .name { font-size: 0.84rem; }
+  .name.big { font-size: 0.97rem; }
+  .location { font-size: 0.67rem; margin-bottom: 10px; }
+  .highlight { font-size: 0.55rem; padding: 3px 8px; }
+  .feesLabel { font-size: 0.48rem; }
+  .feesValue { font-size: 0.79rem; }
+  .detailsBtn { font-size: 0.66rem; padding: 5px 12px; }
 }

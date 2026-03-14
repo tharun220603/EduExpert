@@ -29,7 +29,7 @@ export default function CollegeCard({ college, isFeatured }: CollegeCardProps) {
       ref={cardRef}
       onClick={() => router.push(`/college/${college.slug || college.id}`)}
       className={`${styles.card} ${isFeatured ? styles.big : ""}`}
-      whileHover={isFeatured ? { y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.08)" } : { y: -8 }}
+      whileHover={isFeatured ? { y: -10 } : { y: -8 }}
       whileTap={{ scale: 0.98 }}
       initial={isFeatured ? { opacity: 0, y: 20 } : { opacity: 1 }}
       whileInView={isFeatured ? { opacity: 1, y: 0 } : { opacity: 1 }}
@@ -45,29 +45,21 @@ export default function CollegeCard({ college, isFeatured }: CollegeCardProps) {
         />
         <div className={styles.imageOverlay} />
 
-        {/* Top left tags container for Featured */}
+        {/* NIRF Rank (Positioned by CSS to top-right) */}
+        {college.nirfRank && (
+          <div className={styles.nirfBadge}>
+            <FiAward size={12} />
+            <span>NIRF #{college.nirfRank}</span>
+          </div>
+        )}
+
+        {/* Top left tags/labels */}
         {isFeatured ? (
           <div className={styles.tagsLeft}>
             <div className={styles.typeTag}>{college.type}</div>
-            {college.nirfRank && (
-              <div className={styles.nirfBadge}>
-                <FiAward size={12} />
-                <span>NIRF #{college.nirfRank}</span>
-              </div>
-            )}
           </div>
         ) : (
-          <>
-            {/* Standard NIRF position */}
-            {college.nirfRank && (
-              <div className={styles.nirfBadge}>
-                <FiAward size={12} />
-                <span>NIRF #{college.nirfRank}</span>
-              </div>
-            )}
-            {/* Standard type ribbon */}
-            <div className={styles.typeRibbon}>{college.type}</div>
-          </>
+          <div className={styles.typeRibbon}>{college.type}</div>
         )}
 
         {/* Rating pill (Same for both but can use variant styles) */}
