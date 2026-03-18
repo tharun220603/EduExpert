@@ -6,7 +6,6 @@ import {
   FiPhone,
   FiMapPin,
   FiSend,
-  FiMessageSquare,
   FiClock,
 } from "react-icons/fi";
 import locations from "@/data/locations";
@@ -15,6 +14,13 @@ import {
   usePageHeroEntrance,
   useScrollReveal,
 } from "@/hooks/useGsapAnimations";
+import {
+  type ContactFormData,
+  type FormErrors,
+  sanitizeContactFormData,
+  validateContactField,
+  validateContactForm,
+} from "@/utils/formValidation";
 
 export default function ContactPage() {
   const heroRef = useRef<HTMLElement>(null);
@@ -25,16 +31,55 @@ export default function ContactPage() {
   useScrollReveal(infoRef, { y: 30 });
   useScrollReveal(formRef, { y: 30 });
 
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<ContactFormData>({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
+  const [fieldErrors, setFieldErrors] = useState<FormErrors<ContactFormData>>({});
+  const [formError, setFormError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const field = name as keyof ContactFormData;
+
+    setFormState((current) => ({ ...current, [field]: value }));
+    setFieldErrors((current) => ({ ...current, [field]: "" }));
+    if (formError) setFormError("");
+  };
+
+  const handleBlur = (field: keyof ContactFormData) => {
+    const fieldError = validateContactField(field, formState);
+    setFieldErrors((current) => ({ ...current, [field]: fieldError }));
+  };
+
+  const getInputStyle = (field: keyof ContactFormData): React.CSSProperties => ({
+    width: "100%",
+    padding: "12px 16px",
+    borderRadius: "12px",
+    border: `1px solid ${fieldErrors[field] ? "rgba(239, 68, 68, 0.45)" : "var(--border)"}`,
+    background: "var(--bg-main)",
+    fontSize: "0.95rem",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors = validateContactForm(formState);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      setFormError("Please fix the highlighted fields before sending your message.");
+      return;
+    }
+
+    const sanitizedData = sanitizeContactFormData(formState);
+    setFormState(sanitizedData);
+    setFieldErrors({});
+    setFormError("");
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 5000);
     setFormState({ name: "", email: "", subject: "", message: "" });
@@ -85,7 +130,7 @@ export default function ContactPage() {
               }}
             >
               Whether you have questions about admissions, exams, or career
-              guidance, we're here to help you every step of the way.
+              guidance, we&apos;re here to help you every step of the way.
             </p>
           </div>
         </div>
@@ -290,19 +335,35 @@ export default function ContactPage() {
                   <p
                     style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}
                   >
-                    Fill out the form below and we'll get back to you within 24
+                    Fill out the form below and we&apos;ll get back to you within 24
                     hours.
                   </p>
                 </div>
 
                 <form
                   onSubmit={handleSubmit}
+                  noValidate
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     gap: "20px",
                   }}
                 >
+                  {formError && (
+                    <div
+                      style={{
+                        padding: "12px 16px",
+                        background: "rgba(239, 68, 68, 0.1)",
+                        border: "1px solid rgba(239, 68, 68, 0.3)",
+                        borderRadius: "12px",
+                        color: "var(--error)",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {formError}
+                    </div>
+                  )}
+
                   <div
                     style={{
                       display: "grid",
@@ -324,21 +385,21 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="text"
-                        required
+                        name="name"
                         placeholder="John Doe"
                         value={formState.name}
-                        onChange={(e) =>
-                          setFormState({ ...formState, name: e.target.value })
-                        }
-                        style={{
-                          width: "100%",
-                          padding: "12px 16px",
-                          borderRadius: "12px",
-                          border: "1px solid var(--border)",
-                          background: "var(--bg-main)",
-                          fontSize: "0.95rem",
-                        }}
+                        onChange={handleChange}
+                        onBlur={() => handleBlur("name")}
+                        autoComplete="name"
+                        maxLength={60}
+                        aria-invalid={Boolean(fieldErrors.name)}
+                        style={getInputStyle("name")}
                       />
+                      {fieldErrors.name && (
+                        <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                          {fieldErrors.name}
+                        </div>
+                      )}
                     </div>
                     <div className="form-group">
                       <label
@@ -354,21 +415,21 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="email"
-                        required
+                        name="email"
                         placeholder="john@example.com"
                         value={formState.email}
-                        onChange={(e) =>
-                          setFormState({ ...formState, email: e.target.value })
-                        }
-                        style={{
-                          width: "100%",
-                          padding: "12px 16px",
-                          borderRadius: "12px",
-                          border: "1px solid var(--border)",
-                          background: "var(--bg-main)",
-                          fontSize: "0.95rem",
-                        }}
+                        onChange={handleChange}
+                        onBlur={() => handleBlur("email")}
+                        autoComplete="email"
+                        maxLength={254}
+                        aria-invalid={Boolean(fieldErrors.email)}
+                        style={getInputStyle("email")}
                       />
+                      {fieldErrors.email && (
+                        <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                          {fieldErrors.email}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -385,18 +446,12 @@ export default function ContactPage() {
                       Subject
                     </label>
                     <select
+                      name="subject"
                       value={formState.subject}
-                      onChange={(e) =>
-                        setFormState({ ...formState, subject: e.target.value })
-                      }
-                      style={{
-                        width: "100%",
-                        padding: "12px 16px",
-                        borderRadius: "12px",
-                        border: "1px solid var(--border)",
-                        background: "var(--bg-main)",
-                        fontSize: "0.95rem",
-                      }}
+                      onChange={handleChange}
+                      onBlur={() => handleBlur("subject")}
+                      aria-invalid={Boolean(fieldErrors.subject)}
+                      style={getInputStyle("subject")}
                     >
                       <option value="">Select a Topic</option>
                       <option value="Admission">Admission Query</option>
@@ -404,6 +459,11 @@ export default function ContactPage() {
                       <option value="Counselling">Personal Counselling</option>
                       <option value="Other">Other</option>
                     </select>
+                    {fieldErrors.subject && (
+                      <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                        {fieldErrors.subject}
+                      </div>
+                    )}
                   </div>
 
                   <div className="form-group">
@@ -419,26 +479,38 @@ export default function ContactPage() {
                       Message
                     </label>
                     <textarea
-                      required
+                      name="message"
                       rows={4}
                       placeholder="How can we help you?"
                       value={formState.message}
-                      onChange={(e) =>
-                        setFormState({ ...formState, message: e.target.value })
-                      }
+                      onChange={handleChange}
+                      onBlur={() => handleBlur("message")}
+                      maxLength={1000}
+                      aria-invalid={Boolean(fieldErrors.message)}
                       style={{
-                        width: "100%",
-                        padding: "12px 16px",
-                        borderRadius: "12px",
-                        border: "1px solid var(--border)",
-                        background: "var(--bg-main)",
-                        fontSize: "0.95rem",
+                        ...getInputStyle("message"),
                         resize: "none",
                       }}
                     />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: "12px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      <span style={{ color: "var(--error)", fontSize: "0.8rem" }}>
+                        {fieldErrors.message || ""}
+                      </span>
+                      <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
+                        {formState.message.trim().length}/1000
+                      </span>
+                    </div>
                   </div>
 
                   <AntiGravityButton
+                    type="submit"
                     variant="primary"
                     style={{
                       width: "100%",

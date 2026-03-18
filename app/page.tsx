@@ -26,12 +26,7 @@ import {
   useCursorParallaxField,
   useFloatingEntrance,
 } from "@/hooks/useGsapAnimations";
-import {
-  FiArrowRight,
-  FiShield,
-  FiAward,
-  FiBook,
-} from "react-icons/fi";
+import { FiArrowRight, FiShield, FiAward, FiBook } from "react-icons/fi";
 
 import blogPosts from "@/data/blog";
 
@@ -223,7 +218,10 @@ export default function Home() {
       {/* ══════════════════════════════
           STATS STRIP
       ══════════════════════════════ */}
-      <section className="section-sm home-stats-band" style={{ background: "white" }}>
+      <section
+        className="section-sm home-stats-band"
+        style={{ background: "white" }}
+      >
         <div className="container">
           <div className="stats-strip" ref={statsRef}>
             <div className="stats-item">
@@ -287,7 +285,7 @@ export default function Home() {
             </p>
           </div>
 
-          <FeaturedCollegesRow colleges={colleges.slice(0, 15)} />
+          <FeaturedCollegesRow colleges={colleges.slice(0, 24)} />
 
           <div style={{ textAlign: "center", marginTop: "48px" }}>
             <AntiGravityButton

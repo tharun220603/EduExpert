@@ -48,18 +48,29 @@
   <url><loc>https://eduexpert.in/college/iit-madras</loc><priority>0.7</priority></url>
   <url><loc>https://eduexpert.in/college/nit-trichy</loc><priority>0.7</priority></url>
   <url><loc>https://eduexpert.in/college/vit-vellore</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/srm-chennai</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/psg-tech-coimbatore</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/rv-college-bangalore</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/manipal-mit</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/amrita-coimbatore</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/ssn-chennai</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/cmc-vellore</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/iiit-hyderabad</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/mepco-schlenk</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/tce-madurai</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/bits-hyderabad</loc><priority>0.7</priority></url>
-  <url><loc>https://eduexpert.in/college/st-johns-medical</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/amrita-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/srm-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/loyola-college</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/anna-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/psg-tech</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/sastra-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/ssn-college</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/kumaraguru-college</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/christ-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/thiagarajar-college</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/pes-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/manipal-institute</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/mgr-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/vel-tech</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/vels-vistas</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/tagore-engineering</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/sathyabama-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/bharath-university</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/chettinad-care</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/nehru-tech</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/karpagam-academy</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/dhanalakshmi-srinivasan</loc><priority>0.7</priority></url>
+  <url><loc>https://eduexpert.in/college/hits-university</loc><priority>0.7</priority></url>
 
   <!-- Exams -->
   <url><loc>https://eduexpert.in/exams/jee-advanced</loc><priority>0.6</priority></url>

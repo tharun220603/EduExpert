@@ -80,7 +80,9 @@ export default function CollegeCard({ college, isFeatured }: CollegeCardProps) {
 
       {/* ── BODY ── */}
       <div className={`${styles.body} ${isFeatured ? styles.big : ""}`}>
-        <h3 className={`${styles.name} ${isFeatured ? styles.big : ""}`}>{college.name}</h3>
+        <h3 className={`${styles.name} ${isFeatured ? styles.big : ""}`}>
+          {college.name}
+        </h3>
 
         <p className={`${styles.location} ${isFeatured ? styles.big : ""}`}>
           <FiMapPin size={13} className={styles.pinIcon} />
@@ -99,10 +101,16 @@ export default function CollegeCard({ college, isFeatured }: CollegeCardProps) {
         {/* Footer */}
         <div className={styles.footer}>
           <div className={styles.fees}>
-            <span className={`${styles.feesLabel} ${isFeatured ? styles.big : ""}`}>Avg Fees</span>
-            <span className={`${styles.feesValue} ${isFeatured ? styles.big : ""}`}>{college.fees}</span>
+            <span className={`${styles.feesLabel} ${isFeatured ? "" : ""}`}>
+              Avg Fees
+            </span>
+            <span className={`${styles.feesValue} ${isFeatured ? "" : ""}`}>
+              {college.fees}
+            </span>
           </div>
-          <div className={`${styles.detailsBtn} ${isFeatured ? styles.big : ""}`}>
+          <div
+            className={`${styles.detailsBtn} ${isFeatured ? styles.big : ""}`}
+          >
             Details <FiChevronRight size={15} />
           </div>
         </div>

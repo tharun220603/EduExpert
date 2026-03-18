@@ -2,7 +2,17 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import { FiBook, FiMenu, FiX, FiSearch, FiHome, FiGrid, FiAward, FiBookOpen, FiPhoneCall } from "react-icons/fi";
+import {
+  FiBook,
+  FiMenu,
+  FiX,
+  FiSearch,
+  FiHome,
+  FiGrid,
+  FiAward,
+  FiBookOpen,
+  FiPhoneCall,
+} from "react-icons/fi";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ApplyFormModal from "./ApplyFormModal";
@@ -87,7 +97,7 @@ export default function Navbar() {
 
             {/* CTA + Hamburger */}
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <button 
+              <button
                 onClick={() => setSearchOpen(true)}
                 style={{
                   background: "transparent",
@@ -99,7 +109,7 @@ export default function Navbar() {
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: "50%",
-                  transition: "all 0.2s"
+                  transition: "all 0.2s",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = "var(--accent)";
@@ -113,9 +123,7 @@ export default function Navbar() {
                 <FiSearch size={20} />
               </button>
 
-              <div className="hidden-mobile">
-                <ApplyFormModal />
-              </div>
+              <ApplyFormModal collegeId="0" />
 
               <button
                 className="hamburger hidden-mobile"

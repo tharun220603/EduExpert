@@ -406,12 +406,15 @@ export default function CollegeDetails() {
             </div>
           </div>
 
-          <ApplyFormModal buttonText="Apply for Admission 2026" />
+          <ApplyFormModal
+            buttonText="Apply for Admission 2026"
+            collegeId={college.clgId}
+          />
         </div>
       </div>
 
       {/* ── Content Grid ── */}
-      <section className="section" style={{ paddingTop: "40px" }}>
+      <section className="section" style={{ paddingTop: "60px" }}>
         <div className="container">
           <div
             style={{
