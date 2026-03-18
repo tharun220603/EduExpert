@@ -10,6 +10,7 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import gsap from "gsap";
+import { type ApplyFormData } from "@/utils/formValidation";
 
 export default function ApplyFormModal({
   buttonText = "Apply Now",
@@ -29,7 +30,7 @@ export default function ApplyFormModal({
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ApplyFormData>({
     fullName: "",
     email: "",
     phone: "",

@@ -29,6 +29,8 @@ export default function ApplyPage() {
     phone: "",
     course: "",
     city: "",
+    state: "",
+    specialization: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -83,10 +85,10 @@ export default function ApplyPage() {
       father_name: null,
       gender: null,
       country: 91,
-      state: null,
+      state: sanitizedData.state || null,
       city: sanitizedData.city || null,
       course: sanitizedData.course,
-      specialization: null,
+      specialization: sanitizedData.specialization || null,
       source: "Web_API",
       utm_source: utm_source,
       utm_medium: utm_medium,
@@ -343,32 +345,113 @@ export default function ApplyPage() {
                       </div>
                     </div>
 
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                      <div>
+                        <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>State</label>
+                        <select 
+                          name="state"
+                          value={formData.state}
+                          onChange={handleChange}
+                          onBlur={() => handleBlur("state")}
+                          aria-invalid={Boolean(fieldErrors.state)}
+                          style={{ ...getInputStyle("state"), appearance: "none" }}
+                          onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                          onBlurCapture={(e) => {
+                            e.currentTarget.style.borderColor = fieldErrors.state
+                              ? "rgba(239, 68, 68, 0.45)"
+                              : "var(--border)";
+                          }}
+                        >
+                          <option value="">Select State</option>
+                          <option value="Andhra Pradesh">Andhra Pradesh</option>
+                          <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                          <option value="Assam">Assam</option>
+                          <option value="Bihar">Bihar</option>
+                          <option value="Chhattisgarh">Chhattisgarh</option>
+                          <option value="Goa">Goa</option>
+                          <option value="Gujarat">Gujarat</option>
+                          <option value="Haryana">Haryana</option>
+                          <option value="Himachal Pradesh">Himachal Pradesh</option>
+                          <option value="Jharkhand">Jharkhand</option>
+                          <option value="Karnataka">Karnataka</option>
+                          <option value="Kerala">Kerala</option>
+                          <option value="Madhya Pradesh">Madhya Pradesh</option>
+                          <option value="Maharashtra">Maharashtra</option>
+                          <option value="Manipur">Manipur</option>
+                          <option value="Meghalaya">Meghalaya</option>
+                          <option value="Mizoram">Mizoram</option>
+                          <option value="Nagaland">Nagaland</option>
+                          <option value="Odisha">Odisha</option>
+                          <option value="Punjab">Punjab</option>
+                          <option value="Rajasthan">Rajasthan</option>
+                          <option value="Sikkim">Sikkim</option>
+                          <option value="Tamil Nadu">Tamil Nadu</option>
+                          <option value="Telangana">Telangana</option>
+                          <option value="Tripura">Tripura</option>
+                          <option value="Uttar Pradesh">Uttar Pradesh</option>
+                          <option value="Uttarakhand">Uttarakhand</option>
+                          <option value="West Bengal">West Bengal</option>
+                          <option value="Delhi">Delhi</option>
+                        </select>
+                        {fieldErrors.state && (
+                          <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                            {fieldErrors.state}
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Course Stream</label>
+                        <select 
+                          name="course"
+                          value={formData.course}
+                          onChange={handleChange}
+                          onBlur={() => handleBlur("course")}
+                          aria-invalid={Boolean(fieldErrors.course)}
+                          style={{ ...getInputStyle("course"), appearance: "none" }}
+                          onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                          onBlurCapture={(e) => {
+                            e.currentTarget.style.borderColor = fieldErrors.course
+                              ? "rgba(239, 68, 68, 0.45)"
+                              : "var(--border)";
+                          }}
+                        >
+                          <option value="">Interested in...</option>
+                          <option value="Engineering">Engineering (B.Tech / B.E)</option>
+                          <option value="Medical">Medical (MBBS / BDS)</option>
+                          <option value="Arts">Arts & Science</option>
+                          <option value="Management">Management (BBA / MBA)</option>
+                          <option value="Law">Law (LLB)</option>
+                        </select>
+                        {fieldErrors.course && (
+                          <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                            {fieldErrors.course}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     <div>
-                      <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Interested Course</label>
-                      <select 
-                        name="course"
-                        value={formData.course}
+                      <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Specialization / Subject</label>
+                      <input 
+                        type="text" 
+                        name="specialization"
+                        value={formData.specialization}
                         onChange={handleChange}
-                        onBlur={() => handleBlur("course")}
-                        aria-invalid={Boolean(fieldErrors.course)}
-                        style={{ ...getInputStyle("course"), appearance: "none" }}
+                        onBlur={() => handleBlur("specialization")}
+                        placeholder="e.g. Computer Science, Finance, Cardiology"
+                        maxLength={100}
+                        aria-invalid={Boolean(fieldErrors.specialization)}
+                        style={getInputStyle("specialization")}
                         onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
                         onBlurCapture={(e) => {
-                          e.currentTarget.style.borderColor = fieldErrors.course
+                          e.currentTarget.style.borderColor = fieldErrors.specialization
                             ? "rgba(239, 68, 68, 0.45)"
                             : "var(--border)";
                         }}
-                      >
-                        <option value="">Select a course stream...</option>
-                        <option value="engineering">Engineering (B.Tech / B.E)</option>
-                        <option value="medical">Medical (MBBS / BDS)</option>
-                        <option value="arts">Arts & Science</option>
-                        <option value="management">Management (BBA / MBA)</option>
-                        <option value="law">Law (LLB)</option>
-                      </select>
-                      {fieldErrors.course && (
+                      />
+                      {fieldErrors.specialization && (
                         <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
-                          {fieldErrors.course}
+                          {fieldErrors.specialization}
                         </div>
                       )}
                     </div>
