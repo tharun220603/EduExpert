@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   FiX,
   FiCheckCircle,
@@ -26,9 +27,15 @@ export default function ApplyFormModal({
   collegeName?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isBrowser, setIsBrowser] = useState(false);
   const [step, setStep] = useState<"form" | "submitting" | "success">("form");
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  const [states, setStates] = useState<{ id: number; name: string }[]>([]);
+  const [cities, setCities] = useState<{ id: number; name: string }[]>([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
 
   const [formData, setFormData] = useState<ApplyFormData>({
     fullName: "",
@@ -60,6 +67,59 @@ export default function ApplyFormModal({
       });
     }
   }, []);
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
+  // Fetch States
+  useEffect(() => {
+    const fetchStates = async () => {
+      setLoadingStates(true);
+      try {
+        const res = await fetch("/api/states?countryId=101");
+        const data = await res.json();
+        if (data.success) {
+          setStates(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch states:", err);
+      } finally {
+        setLoadingStates(false);
+      }
+    };
+    fetchStates();
+  }, []);
+
+  // Fetch Cities when state changes
+  const handleStateChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const stateName = e.target.value;
+    const selectedState = states.find((s) => s.name === stateName);
+
+    setFormData((prev) => ({ ...prev, state: stateName, city: "" }));
+    setCities([]);
+
+    if (selectedState) {
+      setLoadingCities(true);
+      try {
+        const res = await fetch(`/api/cities?stateId=${selectedState.id}`);
+        const data = await res.json();
+        if (data.success) {
+          setCities(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch cities:", err);
+      } finally {
+        setLoadingCities(false);
+      }
+    }
+
+    if (fieldErrors.state) {
+      const newErrors = { ...fieldErrors };
+      delete newErrors.state;
+      setFieldErrors(newErrors);
+    }
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -198,38 +258,6 @@ export default function ApplyFormModal({
     }
   };
 
-  const states = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttarakhand",
-    "West Bengal",
-    "Delhi",
-  ];
-
   return (
     <>
       <button
@@ -240,535 +268,567 @@ export default function ApplyFormModal({
         {buttonText}
       </button>
 
-      {isOpen && (
-        <div
-          ref={overlayRef}
-          className="apply-modal-overlay"
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(3, 7, 18, 0.75)",
-            backdropFilter: "blur(16px)",
-            zIndex: 100000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "40px 20px",
-          }}
-          onClick={(e) => e.target === overlayRef.current && closeModal()}
-        >
+      {isBrowser &&
+        isOpen &&
+        createPortal(
           <div
-            ref={modalRef}
-            className="apply-modal-container"
+            ref={overlayRef}
+            className="apply-modal-overlay"
             style={{
-              position: "relative",
-              width: "100%",
-              maxWidth: "880px",
-              background: "#fff",
-              borderRadius: "32px",
-              overflow: "hidden",
+              position: "fixed",
+              inset: 0,
+              background: "rgba(3, 7, 18, 0.75)",
+              backdropFilter: "blur(16px)",
+              zIndex: 100000,
               display: "flex",
-              boxShadow: "0 40px 100px -20px rgba(0,0,0,0.6)",
-              zIndex: 100001,
-              maxHeight: "calc(100vh - 80px)",
-              margin: "100px auto",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "20px",
             }}
+            onClick={(e) => e.target === overlayRef.current && closeModal()}
           >
-            {/* Close Button */}
-            <button
-              onClick={closeModal}
-              style={{
-                position: "absolute",
-                top: "24px",
-                right: "24px",
-                background: "rgba(0,0,0,0.05)",
-                border: "none",
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                zIndex: 110,
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(0,0,0,0.1)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "rgba(0,0,0,0.05)")
-              }
-            >
-              <FiX size={20} color="#111827" />
-            </button>
-
-            {/* Left Sidebar */}
             <div
-              className="apply-modal-sidebar"
+              ref={modalRef}
+              className="apply-modal-container"
               style={{
-                flex: "0 0 38%",
-                background: "linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)",
-                padding: "48px 40px",
-                color: "#fff",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
                 position: "relative",
+                width: "100%",
+                maxWidth: "760px",
+                background: "#fff",
+                borderRadius: "24px",
+                overflow: "hidden",
+                display: "flex",
+                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)",
+                zIndex: 100001,
+                maxHeight: "90vh",
               }}
             >
-              <div style={{ position: "relative", zIndex: 2 }}>
-                <div
-                  style={{
-                    background: "rgba(255,255,255,0.2)",
-                    width: "56px",
-                    height: "56px",
-                    borderRadius: "16px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "24px",
-                  }}
-                >
-                  <FiAward size={28} />
-                </div>
-                <h2
-                  style={{
-                    fontSize: "2rem",
-                    fontWeight: 800,
-                    lineHeight: 1.2,
-                    marginBottom: "24px",
-                  }}
-                >
-                  Predict Your{" "}
-                  <span style={{ color: "#fbbf24" }}>Admission</span> Chances
-                </h2>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                  }}
-                >
-                  {[
-                    "Personalised Expert Counselling",
-                    "Detailed Admission Report",
-                    "College Matching Analysis",
-                  ].map((text, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "24px",
-                          height: "24px",
-                          borderRadius: "50%",
-                          background: "rgba(255,255,255,0.15)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <FiCheck size={14} />
-                      </div>
-                      <span style={{ fontWeight: 500, opacity: 0.9 }}>
-                        {text}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div
+              {/* Close Button */}
+              <button
+                onClick={closeModal}
                 style={{
                   position: "absolute",
-                  bottom: "-40px",
-                  right: "-40px",
-                  width: "200px",
-                  height: "200px",
+                  top: "16px",
+                  right: "16px",
+                  background: "rgba(0,0,0,0.05)",
+                  border: "none",
+                  width: "32px",
+                  height: "32px",
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.05)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  zIndex: 110,
+                  transition: "all 0.2s",
                 }}
-              />
-            </div>
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "rgba(0,0,0,0.1)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "rgba(0,0,0,0.05)")
+                }
+              >
+                <FiX size={20} color="#111827" />
+              </button>
 
-            {/* Right Side: Form */}
-            <div
-              className="apply-modal-form-side"
-              style={{
-                flex: 1,
-                padding: "48px 40px 32px",
-                overflowY: "auto",
-                background: "#fcfbf7",
-              }}
-            >
-              {step === "form" && (
-                <>
-                  <div style={{ marginBottom: "36px" }}>
-                    <h4
-                      style={{
-                        fontSize: "0.85rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.1em",
-                        color: "#6b7280",
-                        marginBottom: "12px",
-                        fontWeight: 700,
-                      }}
-                    >
-                      Looking for admission
-                    </h4>
-                    <h2
-                      style={{
-                        fontSize: "1.5rem",
-                        fontWeight: 800,
-                        color: "#111827",
-                      }}
-                    >
-                      Apply to {collegeName}
-                    </h2>
-                  </div>
-
-                  {error && (
-                    <div
-                      style={{
-                        padding: "12px 16px",
-                        background: "#fef2f2",
-                        border: "1px solid #fee2e2",
-                        borderRadius: "12px",
-                        color: "#ef4444",
-                        fontSize: "0.9rem",
-                        marginBottom: "24px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                    >
-                      <FiAlertCircle size={18} /> {error}
-                    </div>
-                  )}
-
-                  <form
-                    onSubmit={handleSubmit}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: "24px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        gridColumn: "1 / -1",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "#374151",
-                        }}
-                      >
-                        Full Name
-                      </label>
-                      <input
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleChange}
-                        placeholder="Enter your full name"
-                        style={getInputStyle(!!fieldErrors.fullName)}
-                      />
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "#374151",
-                        }}
-                      >
-                        Email
-                      </label>
-                      <input
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="email@example.com"
-                        style={getInputStyle(!!fieldErrors.email)}
-                      />
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "#374151",
-                        }}
-                      >
-                        Phone
-                      </label>
-                      <input
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="10-digit mobile number"
-                        style={getInputStyle(!!fieldErrors.phone)}
-                      />
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "#374151",
-                        }}
-                      >
-                        State
-                      </label>
-                      <select
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        style={getInputStyle(!!fieldErrors.state)}
-                      >
-                        <option value="" disabled>
-                          Select State
-                        </option>
-                        {states.map((s) => (
-                          <option key={s} value={s}>
-                            {s}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "#374151",
-                        }}
-                      >
-                        City
-                      </label>
-                      <input
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        placeholder="Enter your city"
-                        style={getInputStyle(false)}
-                      />
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "#374151",
-                        }}
-                      >
-                        Interested Course
-                      </label>
-                      <select
-                        name="course"
-                        value={formData.course}
-                        onChange={handleChange}
-                        style={getInputStyle(!!fieldErrors.course)}
-                      >
-                        <option value="" disabled>
-                          Select Course
-                        </option>
-                        <option value="B.Tech">Engineering (B.Tech)</option>
-                        <option value="MBBS">Medical (MBBS)</option>
-                        <option value="MBA">Management (MBA)</option>
-                        <option value="Law">Law (LLB)</option>
-                        <option value="BCA">Arts & Science (BCA)</option>
-                      </select>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      <label
-                        style={{
-                          fontSize: "0.85rem",
-                          fontWeight: 600,
-                          color: "#374151",
-                        }}
-                      >
-                        Specialization
-                      </label>
-                      <input
-                        name="specialization"
-                        value={formData.specialization}
-                        onChange={handleChange}
-                        placeholder="e.g. Finance, CSE"
-                        style={getInputStyle(false)}
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      style={{
-                        gridColumn: "1 / -1",
-                        marginTop: "12px",
-                        padding: "14px",
-                        borderRadius: "12px",
-                        background: "#f59e0b",
-                        color: "#fff",
-                        fontWeight: 700,
-                        fontSize: "1rem",
-                      }}
-                    >
-                      SEND INQUIRY{" "}
-                      <FiSend size={16} style={{ marginLeft: "8px" }} />
-                    </button>
-                  </form>
-                </>
-              )}
-
-              {step === "submitting" && (
-                <div
-                  style={{
-                    padding: "80px 0",
-                    textAlign: "center",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "20px",
-                  }}
-                >
+              {/* Left Sidebar */}
+              <div
+                className="apply-modal-sidebar"
+                style={{
+                  flex: "0 0 35%",
+                  background:
+                    "linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)",
+                  padding: "40px 32px",
+                  color: "#fff",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  position: "relative",
+                }}
+              >
+                <div style={{ position: "relative", zIndex: 2 }}>
                   <div
                     style={{
-                      width: "48px",
-                      height: "48px",
-                      border: "4px solid #e5e7eb",
-                      borderTopColor: "#4f46e5",
-                      borderRadius: "50%",
-                      animation: "spin 1s linear infinite",
-                    }}
-                  />
-                  <p style={{ fontWeight: 600, color: "#6b7280" }}>
-                    Processing Inquiry...
-                  </p>
-                </div>
-              )}
-
-              {step === "success" && (
-                <div
-                  style={{
-                    padding: "60px 0",
-                    textAlign: "center",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "24px",
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "#ecfdf5",
-                      padding: "24px",
-                      borderRadius: "50%",
-                      color: "#10b981",
+                      background: "rgba(255,255,255,0.2)",
+                      width: "56px",
+                      height: "56px",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: "24px",
                     }}
                   >
-                    <FiCheckCircle size={64} />
+                    <FiAward size={28} />
                   </div>
                   <h2
                     style={{
                       fontSize: "2rem",
                       fontWeight: 800,
-                      color: "#111827",
+                      lineHeight: 1.2,
+                      marginBottom: "24px",
                     }}
                   >
-                    Thank You!
+                    <span style={{ color: "#ffffff" }}>
+                      Get Expert Guidance for{" "}
+                    </span>
+                    <span style={{ color: "#fbbf24" }}>Admission</span>
                   </h2>
-                  <p
+                  <div
                     style={{
-                      fontSize: "1.1rem",
-                      color: "#4b5563",
-                      maxWidth: "400px",
-                      lineHeight: 1.6,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "20px",
                     }}
                   >
-                    Our expert counsellors will contact you shortly to help you
-                    with your admission journey at {collegeName}.
-                  </p>
+                    {[
+                      "Personalised Expert Counselling",
+                      "Detailed Admission Report",
+                      "College Matching Analysis",
+                    ].map((text, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "12px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "24px",
+                            height: "24px",
+                            borderRadius: "50%",
+                            background: "rgba(255,255,255,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <FiCheck size={14} />
+                        </div>
+                        <span style={{ fontWeight: 500, opacity: 0.9 }}>
+                          {text}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              )}
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "-40px",
+                    right: "-40px",
+                    width: "200px",
+                    height: "200px",
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.05)",
+                  }}
+                />
+              </div>
+
+              {/* Right Side: Form */}
+              <div
+                className="apply-modal-form-side"
+                style={{
+                  flex: 1,
+                  padding: "40px 32px",
+                  overflowY: "auto",
+                  background: "#fcfbf7",
+                }}
+              >
+                {step === "form" && (
+                  <>
+                    <div style={{ marginBottom: "24px" }}>
+                      <h4
+                        style={{
+                          fontSize: "0.75rem",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
+                          color: "#6b7280",
+                          marginBottom: "12px",
+                          fontWeight: 700,
+                        }}
+                      >
+                        Looking for admission
+                      </h4>
+                      <h2
+                        style={{
+                          fontSize: "1.3rem",
+                          fontWeight: 800,
+                          color: "#111827",
+                        }}
+                      >
+                        Apply to {collegeName}
+                      </h2>
+                    </div>
+
+                    {error && (
+                      <div
+                        style={{
+                          padding: "12px 16px",
+                          background: "#fef2f2",
+                          border: "1px solid #fee2e2",
+                          borderRadius: "12px",
+                          color: "#ef4444",
+                          fontSize: "0.9rem",
+                          marginBottom: "24px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        <FiAlertCircle size={18} /> {error}
+                      </div>
+                    )}
+
+                    <form
+                      onSubmit={handleSubmit}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "16px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          gridColumn: "1 / -1",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "4px",
+                        }}
+                      >
+                        <label
+                          className="required-field"
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 600,
+                            color: "#374151",
+                          }}
+                        >
+                          Full Name
+                        </label>
+                        <input
+                          name="fullName"
+                          value={formData.fullName}
+                          onChange={handleChange}
+                          placeholder="Enter your full name"
+                          style={getInputStyle(!!fieldErrors.fullName)}
+                        />
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
+                        <label
+                          className="required-field"
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 600,
+                            color: "#374151",
+                          }}
+                        >
+                          Email
+                        </label>
+                        <input
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="email@example.com"
+                          style={getInputStyle(!!fieldErrors.email)}
+                        />
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
+                        <label
+                          className="required-field"
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 600,
+                            color: "#374151",
+                          }}
+                        >
+                          Phone
+                        </label>
+                        <input
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="10-digit mobile number"
+                          style={getInputStyle(!!fieldErrors.phone)}
+                        />
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
+                        <label
+                          className="required-field"
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 600,
+                            color: "#374151",
+                          }}
+                        >
+                          State
+                        </label>
+                        <select
+                          name="state"
+                          value={formData.state}
+                          onChange={handleStateChange}
+                          style={getInputStyle(!!fieldErrors.state)}
+                          disabled={loadingStates}
+                        >
+                          <option value="" disabled>
+                            {loadingStates
+                              ? "Loading States..."
+                              : "Select State"}
+                          </option>
+                          {states.map((s) => (
+                            <option key={s.id} value={s.name}>
+                              {s.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
+                        <label
+                          className="required-field"
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 600,
+                            color: "#374151",
+                          }}
+                        >
+                          City
+                        </label>
+                        <select
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          style={getInputStyle(false)}
+                          disabled={!formData.state || loadingCities}
+                        >
+                          <option value="">
+                            {loadingCities
+                              ? "Loading Cities..."
+                              : "Select City"}
+                          </option>
+                          {cities.map((c) => (
+                            <option key={c.id} value={c.name}>
+                              {c.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
+                        <label
+                          className="required-field"
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 600,
+                            color: "#374151",
+                          }}
+                        >
+                          Interested Course
+                        </label>
+                        <select
+                          name="course"
+                          value={formData.course}
+                          onChange={handleChange}
+                          style={getInputStyle(!!fieldErrors.course)}
+                        >
+                          <option value="" disabled>
+                            Select Course
+                          </option>
+                          <option value="B.Tech">Engineering (B.Tech)</option>
+                          <option value="MBBS">Medical (MBBS)</option>
+                          <option value="MBA">Management (MBA)</option>
+                          <option value="Law">Law (LLB)</option>
+                          <option value="BCA">Arts & Science (BCA)</option>
+                        </select>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
+                        }}
+                      >
+                        <label
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 600,
+                            color: "#374151",
+                          }}
+                        >
+                          Specialization
+                        </label>
+                        <input
+                          name="specialization"
+                          value={formData.specialization}
+                          onChange={handleChange}
+                          placeholder="e.g. Finance, CSE"
+                          style={getInputStyle(false)}
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        style={{
+                          gridColumn: "1 / -1",
+                          marginTop: "8px",
+                          padding: "12px",
+                          borderRadius: "8px",
+                          background: "#f59e0b",
+                          color: "#fff",
+                          fontWeight: 700,
+                          fontSize: "0.95rem",
+                        }}
+                      >
+                        SEND INQUIRY{" "}
+                        <FiSend size={16} style={{ marginLeft: "8px" }} />
+                      </button>
+                    </form>
+                  </>
+                )}
+
+                {step === "submitting" && (
+                  <div
+                    style={{
+                      padding: "80px 0",
+                      textAlign: "center",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "20px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        border: "4px solid #e5e7eb",
+                        borderTopColor: "#4f46e5",
+                        borderRadius: "50%",
+                        animation: "spin 1s linear infinite",
+                      }}
+                    />
+                    <p style={{ fontWeight: 600, color: "#6b7280" }}>
+                      Processing Inquiry...
+                    </p>
+                  </div>
+                )}
+
+                {step === "success" && (
+                  <div
+                    style={{
+                      padding: "60px 0",
+                      textAlign: "center",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "24px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: "#ecfdf5",
+                        padding: "24px",
+                        borderRadius: "50%",
+                        color: "#10b981",
+                      }}
+                    >
+                      <FiCheckCircle size={64} />
+                    </div>
+                    <h2
+                      style={{
+                        fontSize: "2rem",
+                        fontWeight: 800,
+                        color: "#111827",
+                      }}
+                    >
+                      Thank You!
+                    </h2>
+                    <p
+                      style={{
+                        fontSize: "1.1rem",
+                        color: "#4b5563",
+                        maxWidth: "400px",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      Our expert counsellors will contact you shortly to help
+                      you with your admission journey at {collegeName}.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <style>{`
+            <style>{`
             @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
             @media (max-width: 880px) {
-              .apply-modal-container { flex-direction: column !important; maxHeight: calc(100vh - 40px) !important; width: 95% !important; }
+              .apply-modal-container { flex-direction: column !important; max-height: 95vh !important; width: 100% !important; max-width: 450px !important; border-radius: 20px !important; }
               .apply-modal-sidebar { display: none !important; }
-              .apply-modal-form-side { padding: 40px 24px 24px !important; }
-              form { grid-template-columns: 1fr !important; gap: 16px !important; }
-              .apply-modal-overlay { padding: 20px 10px !important; }
+              .apply-modal-form-side { padding: 32px 24px 24px !important; }
+              form { grid-template-columns: 1fr !important; gap: 12px !important; }
+              .apply-modal-overlay { padding: 16px !important; }
+            }
+            .required-field::after {
+              content: '*';
+              color: #ef4444; /* Red color for asterisk */
+              margin-left: 4px;
             }
           `}</style>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 }
 
 function getInputStyle(hasError: boolean): React.CSSProperties {
   return {
-    padding: "12px 16px",
+    padding: "10px 14px",
     background: "#fff",
-    border: `1px solid ${hasError ? "#ef4444" : "#e5e7eb"}`,
-    borderRadius: "12px",
-    fontSize: "0.95rem",
+    border: `1px solid ${hasError ? "#ef4444" : "#d1d5db"}`,
+    borderRadius: "8px",
+    fontSize: "0.9rem",
     color: "#111827",
     outline: "none",
-    transition: "border-color 0.2s",
+    transition: "all 0.2s",
+    boxSizing: "border-box",
+    width: "100%",
   };
 }
