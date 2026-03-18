@@ -257,7 +257,7 @@ export default function CollegeDetails() {
                 textTransform: "uppercase",
               }}
             >
-              {college.type} • NIRF RANK #{college.nirfRank || "N/A"}
+              {college.type} {college.nirfRank ? `• NIRF RANK #${college.nirfRank}` : ""}
             </div>
           </div>
 

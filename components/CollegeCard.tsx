@@ -45,7 +45,6 @@ export default function CollegeCard({ college, isFeatured }: CollegeCardProps) {
         />
         <div className={styles.imageOverlay} />
 
-        {/* NIRF Rank (Positioned by CSS to top-right) */}
         {college.nirfRank && (
           <div className={styles.nirfBadge}>
             <FiAward size={12} />

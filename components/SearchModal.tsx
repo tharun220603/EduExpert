@@ -306,22 +306,41 @@ export default function SearchModal({
                     >
                       {college.city}, {college.state}
                     </div>
-                    <div
-                      className="search-result-tag"
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        marginTop: "8px",
-                        padding: "4px 8px",
-                        borderRadius: "999px",
-                        background: "rgba(37, 99, 235, 0.08)",
-                        color: "var(--accent)",
-                        fontSize: "0.73rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      {college.type}
+                    <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
+                      <div
+                        className="search-result-tag"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          padding: "4px 8px",
+                          borderRadius: "999px",
+                          background: "rgba(37, 99, 235, 0.08)",
+                          color: "var(--accent)",
+                          fontSize: "0.73rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.02em",
+                        }}
+                      >
+                        {college.type}
+                      </div>
+
+                      {college.nirfRank && (
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "flex-start",
+                            padding: "4px 8px",
+                            borderRadius: "999px",
+                            background: "linear-gradient(135deg, #f59e0b, #d97706)",
+                            color: "#fff",
+                            fontSize: "0.7rem",
+                            fontWeight: 800,
+                            letterSpacing: "0.01em",
+                          }}
+                        >
+                          NIRF #{college.nirfRank}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

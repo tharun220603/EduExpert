@@ -124,10 +124,13 @@ function ApplyFormContent() {
         message.includes("already") ||
         message.includes("exists") ||
         message.includes("completed") ||
-        response.status === 409;
+        response.status === 409 ||
+        (responseData.code === 400 &&
+          responseData.success === true &&
+          message.includes("exists"));
 
       if (isAlreadyRegistered) {
-        setError("Already Registered");
+        setError("Already Registered ");
         setSubmitting(false);
         return;
       }
@@ -156,9 +159,9 @@ function ApplyFormContent() {
   return (
     <>
       <section
-        className="page-hero"
+        className="page-hero apply-page-container"
         ref={heroRef}
-        style={{ paddingBottom: "40px" }}
+        style={{ padding: "80px 20px" }}
       >
         <div className="container">
           <div
@@ -261,7 +264,7 @@ function ApplyFormContent() {
             </div>
 
             {/* Right Form Pane */}
-            <div style={{ padding: "48px 40px", background: "var(--bg-main)" }}>
+            <div className="apply-form-card" style={{ padding: "48px 40px", background: "var(--bg-main)" }}>
               {submitted ? (
                 <div
                   style={{
@@ -435,6 +438,7 @@ function ApplyFormContent() {
                     </div>
 
                     <div
+                      className="grid-cols-2-mobile"
                       style={{
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr",
@@ -534,6 +538,7 @@ function ApplyFormContent() {
                     </div>
 
                     <div
+                      className="grid-cols-2-mobile"
                       style={{
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr",
@@ -737,6 +742,13 @@ function ApplyFormContent() {
             </div>
           </div>
         </div>
+        <style>{`
+          @media (max-width: 768px) {
+            .grid-cols-2-mobile { grid-template-columns: 1fr !important; gap: 24px !important; }
+            .apply-page-container { padding: 40px 16px !important; }
+            .apply-form-card { padding: 32px 20px !important; border-radius: 20px !important; }
+          }
+        `}</style>
       </section>
     </>
   );
