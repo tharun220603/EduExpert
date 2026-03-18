@@ -1,7 +1,13 @@
 "use client";
-import React, { useRef, useState } from "react";
+
+export const dynamic = "force-dynamic";
+
+import React, { useRef, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { usePageHeroEntrance, useScrollReveal } from "@/hooks/useGsapAnimations";
+import {
+  usePageHeroEntrance,
+  useScrollReveal,
+} from "@/hooks/useGsapAnimations";
 import AntiGravityButton from "@/components/AntiGravityButton";
 import {
   type ApplyFormData,
@@ -11,10 +17,10 @@ import {
   validateApplyForm,
 } from "@/utils/formValidation";
 
-export default function ApplyPage() {
+function ApplyFormContent() {
   const heroRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   usePageHeroEntrance(heroRef);
   useScrollReveal(containerRef, { y: 40 });
 
@@ -33,7 +39,9 @@ export default function ApplyPage() {
     specialization: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     const field = name as keyof ApplyFormData;
 
@@ -43,7 +51,9 @@ export default function ApplyPage() {
   };
 
   const handleBlur = (field: keyof ApplyFormData) => {
-    const fieldError = validateApplyField(field, formData, { requireCity: true });
+    const fieldError = validateApplyField(field, formData, {
+      requireCity: true,
+    });
     setFieldErrors((current) => ({ ...current, [field]: fieldError }));
   };
 
@@ -109,11 +119,12 @@ export default function ApplyPage() {
 
       // 1. Check for "Already Registered" keywords first
       const message = responseData.message?.toLowerCase() || "";
-      const isAlreadyRegistered = message.includes("registered") || 
-                                  message.includes("already") ||
-                                  message.includes("exists") ||
-                                  message.includes("completed") ||
-                                  response.status === 409;
+      const isAlreadyRegistered =
+        message.includes("registered") ||
+        message.includes("already") ||
+        message.includes("exists") ||
+        message.includes("completed") ||
+        response.status === 409;
 
       if (isAlreadyRegistered) {
         setError("Already Registered");
@@ -122,7 +133,10 @@ export default function ApplyPage() {
       }
 
       // 2. Check for Success
-      if (response.status === 201 || (response.status === 200 && responseData.success)) {
+      if (
+        response.status === 201 ||
+        (response.status === 200 && responseData.success)
+      ) {
         setFormData(sanitizedData);
         setFieldErrors({});
         setSubmitted(true);
@@ -141,15 +155,24 @@ export default function ApplyPage() {
 
   return (
     <>
-      <section className="page-hero" ref={heroRef} style={{ paddingBottom: "40px" }}>
+      <section
+        className="page-hero"
+        ref={heroRef}
+        style={{ paddingBottom: "40px" }}
+      >
         <div className="container">
-          <div className="page-hero-content" style={{ textAlign: "center", margin: "0 auto" }}>
+          <div
+            className="page-hero-content"
+            style={{ textAlign: "center", margin: "0 auto" }}
+          >
             <span className="badge badge-green">🚀 Start Your Journey</span>
             <h1>
               Apply <span>Now</span>
             </h1>
             <p style={{ margin: "0 auto", maxWidth: "600px" }}>
-              Take the first step towards your dream college. Fill out the application form below and our counselors will guide you through the admission process.
+              Take the first step towards your dream college. Fill out the
+              application form below and our counselors will guide you through
+              the admission process.
             </p>
           </div>
         </div>
@@ -157,7 +180,7 @@ export default function ApplyPage() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
-          <div 
+          <div
             ref={containerRef}
             style={{
               display: "grid",
@@ -167,11 +190,11 @@ export default function ApplyPage() {
               borderRadius: "24px",
               border: "1px solid var(--glass-border)",
               boxShadow: "var(--shadow-lg)",
-              overflow: "hidden"
+              overflow: "hidden",
             }}
           >
             {/* Left Image Pane */}
-            <div 
+            <div
               style={{
                 position: "relative",
                 minHeight: "400px",
@@ -180,31 +203,59 @@ export default function ApplyPage() {
                 backgroundPosition: "center",
               }}
             >
-              <div 
+              <div
                 style={{
                   position: "absolute",
                   inset: 0,
-                  background: "linear-gradient(to right, rgba(15, 23, 42, 0.4), var(--bg-hero))",
+                  background:
+                    "linear-gradient(to right, rgba(15, 23, 42, 0.4), var(--bg-hero))",
                 }}
               />
-              <div 
+              <div
                 style={{
                   position: "absolute",
                   bottom: "40px",
                   left: "40px",
                   right: "40px",
-                  zIndex: 2
+                  zIndex: 2,
                 }}
               >
-                <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
-                  <span className="badge badge-amber" style={{ backdropFilter: "blur(10px)", background: "rgba(245, 158, 11, 0.2)" }}>100% Free Counseling</span>
-                  <span className="badge badge-blue" style={{ backdropFilter: "blur(10px)", background: "rgba(59, 130, 246, 0.2)" }}>Verified Colleges</span>
+                <div
+                  style={{ display: "flex", gap: "12px", marginBottom: "16px" }}
+                >
+                  <span
+                    className="badge badge-amber"
+                    style={{
+                      backdropFilter: "blur(10px)",
+                      background: "rgba(245, 158, 11, 0.2)",
+                    }}
+                  >
+                    100% Free Counseling
+                  </span>
+                  <span
+                    className="badge badge-blue"
+                    style={{
+                      backdropFilter: "blur(10px)",
+                      background: "rgba(59, 130, 246, 0.2)",
+                    }}
+                  >
+                    Verified Colleges
+                  </span>
                 </div>
-                <h3 style={{ fontSize: "2rem", color: "var(--white)", marginBottom: "12px", lineHeight: 1.2 }}>
+                <h3
+                  style={{
+                    fontSize: "2rem",
+                    color: "var(--white)",
+                    marginBottom: "12px",
+                    lineHeight: 1.2,
+                  }}
+                >
                   Your Future Starts Here.
                 </h3>
                 <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "1rem" }}>
-                  Join over 10,000+ students who have successfully secured admissions in top Southern Indian institutions through EduExpert.
+                  Join over 10,000+ students who have successfully secured
+                  admissions in top Southern Indian institutions through
+                  EduExpert.
                 </p>
               </div>
             </div>
@@ -212,33 +263,100 @@ export default function ApplyPage() {
             {/* Right Form Pane */}
             <div style={{ padding: "48px 40px", background: "var(--bg-main)" }}>
               {submitted ? (
-                <div style={{ textAlign: "center", padding: "60px 0", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ fontSize: "4rem", marginBottom: "24px", animation: "pulse 2s infinite" }}>✅</div>
-                  <h2 style={{ color: "var(--accent)", marginBottom: "16px", fontSize: "1.8rem" }}>Application Received!</h2>
+                <div
+                  style={{
+                    textAlign: "center",
+                    padding: "60px 0",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "4rem",
+                      marginBottom: "24px",
+                      animation: "pulse 2s infinite",
+                    }}
+                  >
+                    ✅
+                  </div>
+                  <h2
+                    style={{
+                      color: "var(--accent)",
+                      marginBottom: "16px",
+                      fontSize: "1.8rem",
+                    }}
+                  >
+                    Application Received!
+                  </h2>
                   <p style={{ color: "var(--text-mid)", lineHeight: 1.6 }}>
-                    Thank you for choosing EduExpert. One of our expert admission counselors will contact you shortly on the provided phone number to proceed with your application.
+                    Thank you for choosing EduExpert. One of our expert
+                    admission counselors will contact you shortly on the
+                    provided phone number to proceed with your application.
                   </p>
                 </div>
               ) : (
                 <>
-                  <h3 style={{ fontSize: "1.4rem", color: "var(--text)", marginBottom: "8px" }}>Student Details</h3>
-                  <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "32px" }}>Complete the form below to receive personalized guidance.</p>
-                  
+                  <h3
+                    style={{
+                      fontSize: "1.4rem",
+                      color: "var(--text)",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    Student Details
+                  </h3>
+                  <p
+                    style={{
+                      color: "var(--text-muted)",
+                      fontSize: "0.9rem",
+                      marginBottom: "32px",
+                    }}
+                  >
+                    Complete the form below to receive personalized guidance.
+                  </p>
+
                   {error && (
-                    <div style={{ padding: "12px 16px", background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.3)", borderRadius: "12px", color: "#f87171", fontSize: "0.9rem", marginBottom: "20px" }}>
+                    <div
+                      style={{
+                        padding: "12px 16px",
+                        background: "rgba(239, 68, 68, 0.1)",
+                        border: "1px solid rgba(239, 68, 68, 0.3)",
+                        borderRadius: "12px",
+                        color: "#f87171",
+                        fontSize: "0.9rem",
+                        marginBottom: "20px",
+                      }}
+                    >
                       {error}
                     </div>
                   )}
-                  
+
                   <form
                     onSubmit={handleSubmit}
                     noValidate
-                    style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "24px",
+                    }}
                   >
                     <div>
-                      <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Full Name</label>
-                      <input 
-                        type="text" 
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "8px",
+                          fontWeight: "600",
+                          fontSize: "0.9rem",
+                          color: "var(--text-mid)",
+                        }}
+                      >
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
                         name="fullName"
                         value={formData.fullName}
                         onChange={handleChange}
@@ -248,24 +366,43 @@ export default function ApplyPage() {
                         maxLength={60}
                         aria-invalid={Boolean(fieldErrors.fullName)}
                         style={getInputStyle("fullName")}
-                        onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                        onFocus={(e) =>
+                          (e.target.style.borderColor = "var(--accent)")
+                        }
                         onBlurCapture={(e) => {
-                          e.currentTarget.style.borderColor = fieldErrors.fullName
-                            ? "rgba(239, 68, 68, 0.45)"
-                            : "var(--border)";
+                          e.currentTarget.style.borderColor =
+                            fieldErrors.fullName
+                              ? "rgba(239, 68, 68, 0.45)"
+                              : "var(--border)";
                         }}
                       />
                       {fieldErrors.fullName && (
-                        <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                        <div
+                          style={{
+                            color: "var(--error)",
+                            fontSize: "0.8rem",
+                            marginTop: "8px",
+                          }}
+                        >
                           {fieldErrors.fullName}
                         </div>
                       )}
                     </div>
 
                     <div>
-                      <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Email Address</label>
-                      <input 
-                        type="email" 
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "8px",
+                          fontWeight: "600",
+                          fontSize: "0.9rem",
+                          color: "var(--text-mid)",
+                        }}
+                      >
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
@@ -275,7 +412,9 @@ export default function ApplyPage() {
                         maxLength={254}
                         aria-invalid={Boolean(fieldErrors.email)}
                         style={getInputStyle("email")}
-                        onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                        onFocus={(e) =>
+                          (e.target.style.borderColor = "var(--accent)")
+                        }
                         onBlurCapture={(e) => {
                           e.currentTarget.style.borderColor = fieldErrors.email
                             ? "rgba(239, 68, 68, 0.45)"
@@ -283,17 +422,39 @@ export default function ApplyPage() {
                         }}
                       />
                       {fieldErrors.email && (
-                        <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                        <div
+                          style={{
+                            color: "var(--error)",
+                            fontSize: "0.8rem",
+                            marginTop: "8px",
+                          }}
+                        >
                           {fieldErrors.email}
                         </div>
                       )}
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "16px",
+                      }}
+                    >
                       <div>
-                        <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Phone Number</label>
-                        <input 
-                          type="tel" 
+                        <label
+                          style={{
+                            display: "block",
+                            marginBottom: "8px",
+                            fontWeight: "600",
+                            fontSize: "0.9rem",
+                            color: "var(--text-mid)",
+                          }}
+                        >
+                          Phone Number
+                        </label>
+                        <input
+                          type="tel"
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
@@ -304,23 +465,42 @@ export default function ApplyPage() {
                           maxLength={16}
                           aria-invalid={Boolean(fieldErrors.phone)}
                           style={getInputStyle("phone")}
-                          onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                          onFocus={(e) =>
+                            (e.target.style.borderColor = "var(--accent)")
+                          }
                           onBlurCapture={(e) => {
-                            e.currentTarget.style.borderColor = fieldErrors.phone
-                              ? "rgba(239, 68, 68, 0.45)"
-                              : "var(--border)";
+                            e.currentTarget.style.borderColor =
+                              fieldErrors.phone
+                                ? "rgba(239, 68, 68, 0.45)"
+                                : "var(--border)";
                           }}
                         />
                         {fieldErrors.phone && (
-                          <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                          <div
+                            style={{
+                              color: "var(--error)",
+                              fontSize: "0.8rem",
+                              marginTop: "8px",
+                            }}
+                          >
                             {fieldErrors.phone}
                           </div>
                         )}
                       </div>
                       <div>
-                        <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>City</label>
-                        <input 
-                          type="text" 
+                        <label
+                          style={{
+                            display: "block",
+                            marginBottom: "8px",
+                            fontWeight: "600",
+                            fontSize: "0.9rem",
+                            color: "var(--text-mid)",
+                          }}
+                        >
+                          City
+                        </label>
+                        <input
+                          type="text"
                           name="city"
                           value={formData.city}
                           onChange={handleChange}
@@ -330,7 +510,9 @@ export default function ApplyPage() {
                           maxLength={60}
                           aria-invalid={Boolean(fieldErrors.city)}
                           style={getInputStyle("city")}
-                          onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                          onFocus={(e) =>
+                            (e.target.style.borderColor = "var(--accent)")
+                          }
                           onBlurCapture={(e) => {
                             e.currentTarget.style.borderColor = fieldErrors.city
                               ? "rgba(239, 68, 68, 0.45)"
@@ -338,40 +520,72 @@ export default function ApplyPage() {
                           }}
                         />
                         {fieldErrors.city && (
-                          <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                          <div
+                            style={{
+                              color: "var(--error)",
+                              fontSize: "0.8rem",
+                              marginTop: "8px",
+                            }}
+                          >
                             {fieldErrors.city}
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "16px",
+                      }}
+                    >
                       <div>
-                        <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>State</label>
-                        <select 
+                        <label
+                          style={{
+                            display: "block",
+                            marginBottom: "8px",
+                            fontWeight: "600",
+                            fontSize: "0.9rem",
+                            color: "var(--text-mid)",
+                          }}
+                        >
+                          State
+                        </label>
+                        <select
                           name="state"
                           value={formData.state}
                           onChange={handleChange}
                           onBlur={() => handleBlur("state")}
                           aria-invalid={Boolean(fieldErrors.state)}
-                          style={{ ...getInputStyle("state"), appearance: "none" }}
-                          onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                          style={{
+                            ...getInputStyle("state"),
+                            appearance: "none",
+                          }}
+                          onFocus={(e) =>
+                            (e.target.style.borderColor = "var(--accent)")
+                          }
                           onBlurCapture={(e) => {
-                            e.currentTarget.style.borderColor = fieldErrors.state
-                              ? "rgba(239, 68, 68, 0.45)"
-                              : "var(--border)";
+                            e.currentTarget.style.borderColor =
+                              fieldErrors.state
+                                ? "rgba(239, 68, 68, 0.45)"
+                                : "var(--border)";
                           }}
                         >
                           <option value="">Select State</option>
                           <option value="Andhra Pradesh">Andhra Pradesh</option>
-                          <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                          <option value="Arunachal Pradesh">
+                            Arunachal Pradesh
+                          </option>
                           <option value="Assam">Assam</option>
                           <option value="Bihar">Bihar</option>
                           <option value="Chhattisgarh">Chhattisgarh</option>
                           <option value="Goa">Goa</option>
                           <option value="Gujarat">Gujarat</option>
                           <option value="Haryana">Haryana</option>
-                          <option value="Himachal Pradesh">Himachal Pradesh</option>
+                          <option value="Himachal Pradesh">
+                            Himachal Pradesh
+                          </option>
                           <option value="Jharkhand">Jharkhand</option>
                           <option value="Karnataka">Karnataka</option>
                           <option value="Kerala">Kerala</option>
@@ -394,36 +608,68 @@ export default function ApplyPage() {
                           <option value="Delhi">Delhi</option>
                         </select>
                         {fieldErrors.state && (
-                          <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                          <div
+                            style={{
+                              color: "var(--error)",
+                              fontSize: "0.8rem",
+                              marginTop: "8px",
+                            }}
+                          >
                             {fieldErrors.state}
                           </div>
                         )}
                       </div>
                       <div>
-                        <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Course Stream</label>
-                        <select 
+                        <label
+                          style={{
+                            display: "block",
+                            marginBottom: "8px",
+                            fontWeight: "600",
+                            fontSize: "0.9rem",
+                            color: "var(--text-mid)",
+                          }}
+                        >
+                          Course Stream
+                        </label>
+                        <select
                           name="course"
                           value={formData.course}
                           onChange={handleChange}
                           onBlur={() => handleBlur("course")}
                           aria-invalid={Boolean(fieldErrors.course)}
-                          style={{ ...getInputStyle("course"), appearance: "none" }}
-                          onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                          style={{
+                            ...getInputStyle("course"),
+                            appearance: "none",
+                          }}
+                          onFocus={(e) =>
+                            (e.target.style.borderColor = "var(--accent)")
+                          }
                           onBlurCapture={(e) => {
-                            e.currentTarget.style.borderColor = fieldErrors.course
-                              ? "rgba(239, 68, 68, 0.45)"
-                              : "var(--border)";
+                            e.currentTarget.style.borderColor =
+                              fieldErrors.course
+                                ? "rgba(239, 68, 68, 0.45)"
+                                : "var(--border)";
                           }}
                         >
                           <option value="">Interested in...</option>
-                          <option value="Engineering">Engineering (B.Tech / B.E)</option>
+                          <option value="Engineering">
+                            Engineering (B.Tech / B.E)
+                          </option>
                           <option value="Medical">Medical (MBBS / BDS)</option>
                           <option value="Arts">Arts & Science</option>
-                          <option value="Management">Management (BBA / MBA)</option>
+                          <option value="Management">
+                            Management (BBA / MBA)
+                          </option>
                           <option value="Law">Law (LLB)</option>
                         </select>
                         {fieldErrors.course && (
-                          <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                          <div
+                            style={{
+                              color: "var(--error)",
+                              fontSize: "0.8rem",
+                              marginTop: "8px",
+                            }}
+                          >
                             {fieldErrors.course}
                           </div>
                         )}
@@ -431,9 +677,19 @@ export default function ApplyPage() {
                     </div>
 
                     <div>
-                      <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", fontSize: "0.9rem", color: "var(--text-mid)" }}>Specialization / Subject</label>
-                      <input 
-                        type="text" 
+                      <label
+                        style={{
+                          display: "block",
+                          marginBottom: "8px",
+                          fontWeight: "600",
+                          fontSize: "0.9rem",
+                          color: "var(--text-mid)",
+                        }}
+                      >
+                        Specialization / Subject
+                      </label>
+                      <input
+                        type="text"
                         name="specialization"
                         value={formData.specialization}
                         onChange={handleChange}
@@ -442,22 +698,36 @@ export default function ApplyPage() {
                         maxLength={100}
                         aria-invalid={Boolean(fieldErrors.specialization)}
                         style={getInputStyle("specialization")}
-                        onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
+                        onFocus={(e) =>
+                          (e.target.style.borderColor = "var(--accent)")
+                        }
                         onBlurCapture={(e) => {
-                          e.currentTarget.style.borderColor = fieldErrors.specialization
-                            ? "rgba(239, 68, 68, 0.45)"
-                            : "var(--border)";
+                          e.currentTarget.style.borderColor =
+                            fieldErrors.specialization
+                              ? "rgba(239, 68, 68, 0.45)"
+                              : "var(--border)";
                         }}
                       />
                       {fieldErrors.specialization && (
-                        <div style={{ color: "var(--error)", fontSize: "0.8rem", marginTop: "8px" }}>
+                        <div
+                          style={{
+                            color: "var(--error)",
+                            fontSize: "0.8rem",
+                            marginTop: "8px",
+                          }}
+                        >
                           {fieldErrors.specialization}
                         </div>
                       )}
                     </div>
 
                     <div style={{ marginTop: "8px" }}>
-                      <AntiGravityButton type="submit" variant="primary" style={{ width: "100%", padding: "16px" }} disabled={submitting}>
+                      <AntiGravityButton
+                        type="submit"
+                        variant="primary"
+                        style={{ width: "100%", padding: "16px" }}
+                        disabled={submitting}
+                      >
                         {submitting ? "Processing..." : "Submit Application"}
                       </AntiGravityButton>
                     </div>
@@ -465,10 +735,17 @@ export default function ApplyPage() {
                 </>
               )}
             </div>
-
           </div>
         </div>
       </section>
     </>
+  );
+}
+
+export default function ApplyPage() {
+  return (
+    <Suspense fallback={null}>
+      <ApplyFormContent />
+    </Suspense>
   );
 }
